@@ -18,11 +18,17 @@ class Ship{
     };
 
     //set
-    setDamage = (x)=>{
+    hit = (x)=>{
         this.#damage = this.#damage + x;
+        this.#sinkShip();
     }
-    setIsSunk = () =>{
-        (!this.#isSunk)? this.#isSunk = true : this.#isSunk = false; 
+    #sinkShip = () =>{
+        if(!this.#isSunk && this.#damage === this.#length) this.#isSunk = true;
+
     }
 
+}
+
+export{
+    Ship
 }
