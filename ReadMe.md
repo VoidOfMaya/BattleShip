@@ -4,7 +4,7 @@ Welcome to the **Battleship** game project! This is an implementation of the cla
 
 ## Project objectives
 
-<<<<<<< HEAD
+
 1. **TDD**: 
     create the project using the test driven development approach and practice  jest.
     - enabling esm with jest for intigration with webpack
@@ -21,9 +21,6 @@ Welcome to the **Battleship** game project! This is an implementation of the cla
     - managing time and space complexity as needed
     - utilizing datastructures where needed
     - utilizing concepts like bfs and dfs if and where needed
-=======
->>>>>>> c4e2f35c982ad876116e1050fc3da424ee52fe42
-
 ## Game Rules
 
 1. **Objective**: The goal of the game is to sink all of your opponent's ships before they sink yours.
