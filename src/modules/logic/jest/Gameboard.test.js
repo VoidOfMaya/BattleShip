@@ -1,0 +1,18 @@
+import { Gameboard } from "../Gameboard";
+
+const board = new Gameboard(10);
+const wantedOutput = Array.from({ length: 10 }, () => Array(10).fill(null));
+it('initializes gameboard',()=>{
+    expect(board.grid).toEqual(wantedOutput);
+        
+})
+it('places a ship of a length on the gameboard',()=>{
+    wantedOutput[5][5]= "ship";
+    expect(board.populateGrid([5,5], 3)).not.toBeNull()
+})
+it('places a ship out of bounds on the x',()=>{
+
+    expect(()=>{board.populateGrid([5,11], 3)}).toThrow('Ship out of bound!');
+
+    expect(()=>{board.populateGrid([11,5], 3)}).toThrow('Ship out of bound!');
+})
