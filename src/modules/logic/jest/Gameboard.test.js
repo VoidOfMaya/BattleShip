@@ -28,8 +28,6 @@ it('handles ships sunk',()=>{
     expect(board.allShipsSunk()).toBeFalsy();
     board.recieveAttack([5,5]);
     board.recieveAttack([5,5]);
-
-
     expect(board.allShipsSunk()).toBeTruthy();
 
 
