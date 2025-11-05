@@ -1,5 +1,5 @@
 class Ship{
-    #length;
+    #length = 0;
     #damage = 0;
     #isSunk = false;
     constructor(length){
@@ -7,18 +7,17 @@ class Ship{
 
     }
     //get
-    getLength =()=>{
+    getLength = () =>{
         return this.#length;
     };
-    getDamage = ()=>{
+    getDamage = () =>{
         return this.#damage;
     };
-    getIsSunk = ()=>{
+    getIsSunk = () =>{
         return this.#isSunk;
     };
-
     //set
-    hit = (x)=>{
+    hit = (x) =>{
         this.#damage = this.#damage + x;
         this.#sinkShip();
     }
