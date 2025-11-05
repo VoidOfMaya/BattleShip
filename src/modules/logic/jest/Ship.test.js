@@ -2,7 +2,7 @@ import { Ship } from "../Ship";
 //test isSunk public methods
 
 const ship = new Ship(5);
-it('returns true on first run',()=>{
+it('returns fals for ship not sunk yet',()=>{
  
     expect(ship.getIsSunk()).toBeFalsy();
 })
