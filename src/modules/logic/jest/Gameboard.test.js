@@ -16,3 +16,21 @@ it('places a ship out of bounds on the x',()=>{
 
     expect(()=>{board.populateGrid([11,5], 3)}).toThrow('Ship out of bound!');
 })
+it('handles recieving attack on gameboard',()=>{
+    board.recieveAttack([5, 3]);
+    expect(board.grid[5][3]).toBeFalsy();
+
+    board.recieveAttack([5,5]);
+    expect(board.grid[5][5].getDamage()).toEqual(1);
+})
+it('handles ships sunk',()=>{
+
+    expect(board.allShipsSunk()).toBeFalsy();
+    board.recieveAttack([5,5]);
+    board.recieveAttack([5,5]);
+
+
+    expect(board.allShipsSunk()).toBeTruthy();
+
+
+})
