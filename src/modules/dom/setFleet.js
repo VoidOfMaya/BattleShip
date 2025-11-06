@@ -21,7 +21,7 @@ title.style.gridArea = "title";
 title.innerHTML = "position your fleet";
 title.style.alignSelf = "center";
 title.style.justifySelf = "center";
-const grid = createBoard();
+const {grid, cells} = createBoard();
 
 
 view.appendChild(grid);
