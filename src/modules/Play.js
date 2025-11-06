@@ -38,11 +38,11 @@ const statehandler=()=>{
             container.appendChild(mode);
             mode.style.display = 'none'; 
         });
-        gameModes[0].style.display = 'block'; 
+        gameModes[0].style.display = 'grid'; 
     }
     gameModes[currentMode].style.display = 'none';
     currentMode = (currentMode + 1)% gameModes.length;
-    gameModes[currentMode].style.display= "block";
+    gameModes[currentMode].style.display= "grid";
 
     
 }
