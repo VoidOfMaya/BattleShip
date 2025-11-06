@@ -10,7 +10,7 @@ body{
 
 }
 .in-button{
-  background-color: #e8ebee;
+  background-color: #f0f0f0;
   margin-bottom: auto;;
   padding: 10px;
   border-radius: 10px;
@@ -20,4 +20,5 @@ body{
   background-color: #fdfeff;
   padding: 12px;
   color: #838383;
+  cursor: pointer;
 }
