@@ -4,6 +4,7 @@ import { view as attackView} from "./dom/Attack";
 import { view as observeView} from "./dom/observe";
 import { view as initView} from "./dom/preInit";
 import { view as fleetSetView } from "./dom/setFleet";
+
 /**
  * sudo game flow
  * check if game started
