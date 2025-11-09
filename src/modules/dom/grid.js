@@ -16,15 +16,7 @@ const createBoard =()=>{
             cell.textContent = "  ";
             cell.classList.add('cell');
             cell.style.backgroundColor = 'white';
-            //cell.addEventListener('click',()=>{
-            //    console.log(cell.id);
-            //})
-            //cell.addEventListener('mouseover',()=>{
-            //    cell.style.backgroundColor = '#ddddddff';
-            //})
-            //cell.addEventListener('mouseout',()=>{
-            //    cell.style.backgroundColor = 'white';
-            //})
+
             cell.dataset.x = x;
             cell.dataset.y = y;
             cells.push(cell);
