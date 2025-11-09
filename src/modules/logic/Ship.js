@@ -1,9 +1,11 @@
 class Ship{
     #length = 0;
     #damage = 0;
+
     #isSunk = false;
-    constructor(length){
+    constructor(length, name){
         this.#length = length;
+        this.name = name;
 
     }
     //get

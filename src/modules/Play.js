@@ -55,6 +55,8 @@ const init=()=>{
     const aiPlayer = new Player(true);
     body
     gameState();
+    mainPlayer.gameboard.populateGrid([5,6], 4,"vertical");
+    console.log(mainPlayer.gameboard.getGrid());
 
 }
 

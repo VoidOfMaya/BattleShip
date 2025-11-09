@@ -7,10 +7,32 @@ class Gameboard{
         this.grid = Array.from({ length: 10 }, () => Array(10).fill(null));
     }
 
-    populateGrid([x, y], shipLength){
-        if(x > this.grid.length || y > this.grid.length) throw new Error('Ship out of bound!');
-        if(this.grid[y][x] !== null) throw new Error('Position occupied!');
-        this.grid[y][x]= new Ship(shipLength)
+    populateGrid([x, y], shipLength, direction = "horizontal"){
+        
+        if (x < 0 || y < 0 || x >= this.grid.length || y >= this.grid.length) {
+            throw new Error('Starting position out of bounds!');
+        } 
+        const ship = new Ship(shipLength)      
+
+        if(direction === "horizontal"){
+            if(x + shipLength> this.grid.length) throw new Error('ship out of bounds horizontally');
+            for(let i = 0; i < shipLength; i++){
+                if(this.grid[y][x+i]!== null)throw new Error('Position occupied');
+            } 
+            for(let i = 0;i <shipLength; i++){
+                this.grid[y][x + i]= ship;
+            }  
+
+        }
+        if(direction === "vertical"){
+            if(y+ shipLength > this.grid.length)throw new Error('ship out of bounds vertically');
+            for(let i = 0; i < shipLength; i++){
+                if(this.grid[y+1][x]!== null) throw new Error('Position occupied');
+            }
+            for(let i = 0; i < shipLength; i++){
+                this.grid[y+i][x]= ship;
+            }
+        } 
 
     }
     //if coordinate is null meaning no ship,
@@ -32,6 +54,9 @@ class Gameboard{
             })
         })
         return allSunk;
+    }
+    getGrid = () =>{
+        return this.grid;
     }
 }
 export{
