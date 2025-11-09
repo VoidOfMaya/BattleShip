@@ -12,7 +12,7 @@ const createBoard =()=>{
     for(let x = 0; x <10 ; x++){
         for(let y = 0; y < 10; y++){
             const cell = document.createElement('div');
-            cell.setAttribute("id",`${x},${y}`);  
+            cell.setAttribute("id",`${y},${x}`);  
             cell.textContent = "  ";
             cell.classList.add('cell');
             cell.style.backgroundColor = 'white';

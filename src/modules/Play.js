@@ -62,9 +62,6 @@ const syncGrid = (playerGrid )=>{
                     if(cell.id === logicCellId){
                         console.log(cell.id);
                         cell.style.backgroundColor = "#6cf1e6ff";
-                        
-                    }else{
-                        //cell.style.backgroundColor = "#ffffffff";
                     }
                 })
             }
@@ -107,7 +104,8 @@ const handleCellClick = (id, player)=>{
     syncGrid(player.gameboard.getGrid());
     const shipDiv = document.getElementById(selectedShip);
     shipDiv.style.pointerEvents = 'none';
-    shipDiv.style.opacity = '0.5';   
+    shipDiv.style.opacity = '0.5';  
+    console.log(player.gameboard.grid);
 
 }
 const getShipByName = (shipName)=>{
@@ -127,9 +125,8 @@ const battleship=()=>{
     const aiPlayer = new Player(true);
     body
     gameState();
-    console.log(mainPlayer.gameboard.getGrid());
-
     addEventListenerTocells(mainPlayer);
+    
  
    // mainPlayer.gameboard.populateGrid([5,6], 4);
     //mainPlayer.gameboard.populateGrid([1,1], 5);
