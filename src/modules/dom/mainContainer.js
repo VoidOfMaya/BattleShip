@@ -25,34 +25,6 @@ router.style.justifySelf = "center";
 router.style.backgroundColor = '#ddddddff';
 router.style.padding = '10px'
 router.style.gridArea = 'state';
-/*
-const populateBoard =()=>{
-    for(let x = 0; x <10 ; x++){
-        for(let y = 0; y < 10; y++){
-            const cell = document.createElement('div');
-            cell.setAttribute("id",`${x},${y}`);  
-            cell.textContent = "  ";
-            cell.classList.add('cell');
-            cell.style.backgroundColor = 'white';
-            cell.addEventListener('click',()=>{
-                console.log(cell.id);
-            })
-            cell.addEventListener('mouseover',()=>{
-                cell.style.backgroundColor = '#ddddddff';
-            })
-            cell.addEventListener('mouseout',()=>{
-                cell.style.backgroundColor = 'white';
-            })
-            container.appendChild(cell);
-        }
-    }
-}
-populateBoard();
-*/
-
-
-
-
 
 
 

@@ -1,7 +1,13 @@
 import { createBoard } from "./grid";
+import { carrier, battleShip, cruiser, submarine, destroyer } from "./fleetSelect";
 
 const view = document.createElement('div');
 view.style.display = "none";
+
+const fleetCont = document.createElement('div');
+fleetCont.style.gridArea = 'choices';
+fleetCont.style.alignContent = "center";
+fleetCont.style.justifyContent = "center";
 
 view.style.alignSelf = "center";
 view.style.justifySelf = "center";
@@ -13,7 +19,7 @@ view.style.gridTemplateRows = "1fr 4fr 1fr";
 
 view.style.gridTemplateAreas = `
 ". title ."
-". grid ."
+"choices grid ."
 ". .  ."`
 
 const title = document.createElement('div');
@@ -23,9 +29,16 @@ title.style.alignSelf = "center";
 title.style.justifySelf = "center";
 const {grid, cells} = createBoard();
 
-
+view.appendChild(fleetCont);
 view.appendChild(grid);
 view.appendChild(title);
+
+
+fleetCont.appendChild(carrier);
+fleetCont.appendChild(battleShip);
+fleetCont.appendChild(cruiser);
+fleetCont.appendChild(submarine);
+fleetCont.appendChild(destroyer);
 
 export {
     view,

@@ -4,11 +4,10 @@ import { view as attackView} from "./dom/Attack";
 import { view as observeView} from "./dom/observe";
 import { view as initView} from "./dom/preInit";
 import { view as fleetSetView } from "./dom/setFleet";
+import { selectedShip} from "./dom/fleetSelect";
 //import grids
-import { grid as settingGrid } from "./dom/setFleet";
-
-//import objects
 import { Ship } from "./logic/Ship";
+import { grid as settingGrid } from './dom/setFleet'
 /**
  * sudo game flow
  * check if game started
@@ -26,13 +25,7 @@ import { Ship } from "./logic/Ship";
  * -submarine  - 3 cells
  * -destroyer  - 2 cells
  */ 
-const fleet = [
-    { name: 'Carrier', length: 5 },
-    { name: 'Battleship', length: 4 },
-    { name: 'Cruiser', length: 3 },
-    { name: 'Submarine', length: 3 },
-    { name: 'Destroyer', length: 2 }, 
-];
+
 let currentMode = 0;
 const gameModes =[initView, fleetSetView, attackView, observeView];
 
@@ -61,7 +54,6 @@ const syncGrid = (playerGrid )=>{
         logicRow.forEach((logicCell, xIndex) =>{
             if(logicCell instanceof Ship){
                 gridSyncRester();
-                //console.log(`cell contains ${Rindex}${Cindex} = ${logicCell instanceof Ship}`)
                 //get dom cells
                 const logicCellId = `${xIndex},${yIndex}`                
                 const cells = settingGrid.querySelectorAll('.cell');
@@ -86,24 +78,40 @@ const gridSyncRester = ()=>{
     cells.entries(cell=>cell.style.backgroundColor = "#ffffffff")
 }
 
-const addEventListenerTocells = (player, shipLength)=>{
+const addEventListenerTocells = (player)=>{
 
     const cells = settingGrid.querySelectorAll('.cell');
 
     cells.forEach(cell =>{
         cell.addEventListener(`click`,(e)=>{
             const clickedId = e.target.id;
-            handleCellClick(clickedId, player, shipLength);
+            handleCellClick(clickedId, player);
         })
     })
 }
-const handleCellClick = (id, player, shipLength)=>{
+const handleCellClick = (id, player)=>{
+    if(!selectedShip){
+        alert('Please select a ship first');
+        return
+    }
+    const ship = getShipByName(selectedShip);
     const[row, col] = id.split(',').map(Number);
-    player.gameboard.populateGrid([row,col], shipLength);
+    player.gameboard.populateGrid([row,col], ship.length);
     console.log(`[${row},${col}]`)
     syncGrid(player.gameboard.getGrid());
 
 }
+const getShipByName = (shipName)=>{
+    const fleet = [
+        { name: 'Carrier', length: 5 },
+        { name: 'Battleship', length: 4 },
+        { name: 'Cruiser', length: 3 },
+        { name: 'Submarine', length: 3 },
+        { name: 'Destroyer', length: 2 }, 
+    ];
+    return fleet.find(ship=>ship.name === shipName);
+}
+
 
 const battleship=()=>{
     const mainPlayer = new Player();
@@ -112,7 +120,7 @@ const battleship=()=>{
     gameState();
     console.log(mainPlayer.gameboard.getGrid());
 
-    addEventListenerTocells(mainPlayer, 5);
+    addEventListenerTocells(mainPlayer);
  
    // mainPlayer.gameboard.populateGrid([5,6], 4);
     //mainPlayer.gameboard.populateGrid([1,1], 5);
