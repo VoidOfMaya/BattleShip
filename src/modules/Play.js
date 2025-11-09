@@ -4,7 +4,11 @@ import { view as attackView} from "./dom/Attack";
 import { view as observeView} from "./dom/observe";
 import { view as initView} from "./dom/preInit";
 import { view as fleetSetView } from "./dom/setFleet";
+//import grids
+import { grid as settingGrid } from "./dom/setFleet";
 
+//import objects
+import { Ship } from "./logic/Ship";
 /**
  * sudo game flow
  * check if game started
@@ -50,18 +54,53 @@ const statehandler=()=>{
 const gameState =()=>{
     router.addEventListener('click', statehandler)
 }
-const init=()=>{
+const syncGrid = (playerGrid )=>{
+
+    console.log(playerGrid);
+    playerGrid.forEach((logicRow, Rindex) =>{
+        //console.log(logicRow);
+        logicRow.forEach((logicCell, Cindex) =>{
+            if(logicCell instanceof Ship){
+                console.log(`cell contains ${Rindex}${Cindex} = ${logicCell instanceof Ship}`)
+                //get dom cells
+                const logicCellId = `${Rindex},${Cindex}`
+                
+                const cells = settingGrid.querySelectorAll('.cell');
+                
+                cells.forEach(cell=>{
+
+                    if(cell.id === logicCellId){
+                        console.log(`logic cell:  ${logicCellId}`)
+                        console.log(`visual cell:  ${cell.id}`)
+                        console.log(`found cell`)
+                        cell.style.backgroundColor = "#6cf1e6ff";
+                        
+                    }
+                })
+
+                //console.log(cell);
+            }
+            return
+        })
+    })
+
+}
+const battleship=()=>{
     const mainPlayer = new Player();
     const aiPlayer = new Player(true);
     body
     gameState();
-    mainPlayer.gameboard.populateGrid([5,6], 4,"vertical");
-    console.log(mainPlayer.gameboard.getGrid());
+    mainPlayer.gameboard.populateGrid([5,6], 4);
+    mainPlayer.gameboard.populateGrid([1,1], 5);
+     mainPlayer.gameboard.populateGrid([7,3], 3, "vertical");
+    syncGrid(mainPlayer.gameboard.getGrid());
+    
+    //console.log(mainPlayer.gameboard.getGrid());
 
 }
 
 
 
 export {
-    init,
+    battleship,
 }
