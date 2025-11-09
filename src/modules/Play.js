@@ -56,48 +56,73 @@ const gameState =()=>{
 }
 const syncGrid = (playerGrid )=>{
 
-    console.log(playerGrid);
-    playerGrid.forEach((logicRow, Rindex) =>{
-        //console.log(logicRow);
-        logicRow.forEach((logicCell, Cindex) =>{
+    playerGrid.forEach((logicRow, yIndex) =>{
+
+        logicRow.forEach((logicCell, xIndex) =>{
             if(logicCell instanceof Ship){
-                console.log(`cell contains ${Rindex}${Cindex} = ${logicCell instanceof Ship}`)
+                gridSyncRester();
+                //console.log(`cell contains ${Rindex}${Cindex} = ${logicCell instanceof Ship}`)
                 //get dom cells
-                const logicCellId = `${Rindex},${Cindex}`
-                
+                const logicCellId = `${xIndex},${yIndex}`                
                 const cells = settingGrid.querySelectorAll('.cell');
                 
                 cells.forEach(cell=>{
-
                     if(cell.id === logicCellId){
-                        console.log(`logic cell:  ${logicCellId}`)
-                        console.log(`visual cell:  ${cell.id}`)
-                        console.log(`found cell`)
+                        console.log(cell.id);
                         cell.style.backgroundColor = "#6cf1e6ff";
                         
+                    }else{
+                        //cell.style.backgroundColor = "#ffffffff";
                     }
                 })
-
-                //console.log(cell);
             }
             return
         })
     })
 
 }
+const gridSyncRester = ()=>{
+    const cells = settingGrid.querySelectorAll('.cell');
+    cells.entries(cell=>cell.style.backgroundColor = "#ffffffff")
+}
+
+const addEventListenerTocells = (player, shipLength)=>{
+
+    const cells = settingGrid.querySelectorAll('.cell');
+
+    cells.forEach(cell =>{
+        cell.addEventListener(`click`,(e)=>{
+            const clickedId = e.target.id;
+            handleCellClick(clickedId, player, shipLength);
+        })
+    })
+}
+const handleCellClick = (id, player, shipLength)=>{
+    const[row, col] = id.split(',').map(Number);
+    player.gameboard.populateGrid([row,col], shipLength);
+    console.log(`[${row},${col}]`)
+    syncGrid(player.gameboard.getGrid());
+
+}
+
 const battleship=()=>{
     const mainPlayer = new Player();
     const aiPlayer = new Player(true);
     body
     gameState();
-    mainPlayer.gameboard.populateGrid([5,6], 4);
-    mainPlayer.gameboard.populateGrid([1,1], 5);
-     mainPlayer.gameboard.populateGrid([7,3], 3, "vertical");
-    syncGrid(mainPlayer.gameboard.getGrid());
+    console.log(mainPlayer.gameboard.getGrid());
+
+    addEventListenerTocells(mainPlayer, 5);
+ 
+   // mainPlayer.gameboard.populateGrid([5,6], 4);
+    //mainPlayer.gameboard.populateGrid([1,1], 5);
+    //mainPlayer.gameboard.populateGrid([7,2], 3, "vertical");
+    //syncGrid(mainPlayer.gameboard.getGrid());
     
-    //console.log(mainPlayer.gameboard.getGrid());
+    
 
 }
+
 
 
 
