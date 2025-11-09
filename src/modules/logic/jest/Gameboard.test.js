@@ -1,4 +1,5 @@
 import { Gameboard } from "../Gameboard";
+import { Ship } from "../Ship";
 
 const board = new Gameboard(10);
 const wantedOutput = Array.from({ length: 10 }, () => Array(10).fill(null));
@@ -31,4 +32,7 @@ it('handles ships sunk',()=>{
     expect(board.allShipsSunk()).toBeTruthy();
 
 
+})
+it('checks if cells belong to the same ship',()=>{
+    expect( typeof board.grid[5][5]).toEqual("object")
 })
