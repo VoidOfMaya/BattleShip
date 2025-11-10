@@ -113,7 +113,7 @@ const handleCellClick = (id, player)=>{
         movingship = null;
         syncGrid(grid);
         console.log(`ship moved successfully.`);
-        console.log(player.gameboard.grid);
+    
         }catch{
             console.error(`can not move ship : ${err.message}`);
         }
@@ -130,13 +130,16 @@ const handleCellClick = (id, player)=>{
         const shipDiv = document.getElementById(selectedShip);
         shipDiv.style.pointerEvents = 'none';
         shipDiv.style.opacity = '0.5';  
-        console.log(player.gameboard.grid);
         console.log(cellData? `this cell contains ${cellData.name}`: "this cell is empty");
     }
     console.log(placedShips.length);
     if(placedShips.length === 5){
         
         fleetSetView.appendChild(nextStage);
+        nextStage.addEventListener('click',()=>{
+            console.log(`button triggered`);
+            console.log(player.gameboard.grid);
+        })
     }
 }
 const getShipByName = (shipName)=>{
