@@ -7,12 +7,12 @@ class Gameboard{
         this.grid = Array.from({ length: 10 }, () => Array(10).fill(null));
     }
 
-    populateGrid([x, y], shipLength, direction = "horizontal"){
+    populateGrid([x, y], shipLength, name, direction = "horizontal"){
         
         if (x < 0 || y < 0 || x >= this.grid.length || y >= this.grid.length) {
             throw new Error('Starting position out of bounds!');
         } 
-        const ship = new Ship(shipLength)      
+        const ship = new Ship(shipLength, name)      
 
         if(direction === "horizontal"){
             if(x + shipLength> this.grid.length) throw new Error('ship out of bounds horizontally');

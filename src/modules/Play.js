@@ -87,26 +87,41 @@ const addEventListenerTocells = (player)=>{
     })
 }
 let placedShips = [];
+let movingship = null;
 const handleCellClick = (id, player)=>{
+    //if(!selectedShip){
+    //    alert('Please select a ship first');
+    //    return
+    //}
+    //if(placedShips.includes(selectedShip)){
+    //    alert(`you already placed the  ${selectedShip}! please select an other one`);
+    //    console.log()
+    //    return;
+    //}
+
+    
+    const[row, col] = id.split(',').map(Number);
+    const grid = player.gameboard.getGrid();
+    const cellData =grid[col][row];
     if(!selectedShip){
-        alert('Please select a ship first');
+        console.log(`this cell contains: ${JSON.stringify(cellData)}`);
         return
     }
     if(placedShips.includes(selectedShip)){
-        alert(`you already placed the  ${selectedShip}! please select an other one`);
-        return;
-    }
+        console.log(cellData? `this cell contains ${cellData.name}`: "this cell is empty");
+        return
+    }else{
     const ship = getShipByName(selectedShip);
-    const[row, col] = id.split(',').map(Number);
-    player.gameboard.populateGrid([row,col], ship.length, orientation);
-    placedShips.push(selectedShip);
-    console.log(`[${row},${col}]`)
-    syncGrid(player.gameboard.getGrid());
-    const shipDiv = document.getElementById(selectedShip);
-    shipDiv.style.pointerEvents = 'none';
-    shipDiv.style.opacity = '0.5';  
-    console.log(player.gameboard.grid);
-
+        player.gameboard.populateGrid([row,col], ship.length, selectedShip, orientation);
+        placedShips.push(selectedShip);
+        console.log(`[${row},${col}]`)
+        syncGrid(grid);
+        const shipDiv = document.getElementById(selectedShip);
+        shipDiv.style.pointerEvents = 'none';
+        shipDiv.style.opacity = '0.5';  
+        console.log(player.gameboard.grid);
+        console.log(`this cell contains: ${cellData}`);
+    }
 }
 const getShipByName = (shipName)=>{
     const fleet = [
