@@ -5,6 +5,7 @@
 //name: 'Submarine', length: 3 
 //name: 'Destroyer', length: 2 
 let selectedShip = null;
+let orientation = "horizontal";
 const carrier =document.createElement("div");
 carrier.innerHTML='Carrier';
 carrier.id = 'Carrier';
@@ -50,6 +51,17 @@ destroyer.addEventListener('click',()=>{
     selectedShip = destroyer.id;
     console.log(`selected ship set to:${selectedShip} `)    
 })
+const direction = document.createElement("div");
+direction.innerHTML = orientation;
+direction.addEventListener("click",()=>{
+    if(orientation === "horizontal"){
+        orientation = "vertical";    
+    }else{
+        orientation = "horizontal";
+    }
+    direction.innerHTML = orientation
+})
+
 
 export {
     carrier,
@@ -57,5 +69,7 @@ export {
     cruiser,
     submarine,
     destroyer,
-    selectedShip
+    selectedShip,
+    direction,
+    orientation
 }

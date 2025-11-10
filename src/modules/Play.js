@@ -4,7 +4,7 @@ import { view as attackView} from "./dom/Attack";
 import { view as observeView} from "./dom/observe";
 import { view as initView} from "./dom/preInit";
 import { view as fleetSetView } from "./dom/setFleet";
-import { selectedShip} from "./dom/fleetSelect";
+import { selectedShip, orientation} from "./dom/fleetSelect";
 //import grids
 import { Ship } from "./logic/Ship";
 import { grid as settingGrid } from './dom/setFleet'
@@ -98,7 +98,7 @@ const handleCellClick = (id, player)=>{
     }
     const ship = getShipByName(selectedShip);
     const[row, col] = id.split(',').map(Number);
-    player.gameboard.populateGrid([row,col], ship.length);
+    player.gameboard.populateGrid([row,col], ship.length, orientation);
     placedShips.push(selectedShip);
     console.log(`[${row},${col}]`)
     syncGrid(player.gameboard.getGrid());

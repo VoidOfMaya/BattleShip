@@ -1,5 +1,5 @@
 import { createBoard } from "./grid";
-import { carrier, battleShip, cruiser, submarine, destroyer } from "./fleetSelect";
+import { carrier, battleShip, cruiser, submarine, destroyer, direction } from "./fleetSelect";
 
 const view = document.createElement('div');
 view.style.display = "none";
@@ -39,6 +39,7 @@ fleetCont.appendChild(battleShip);
 fleetCont.appendChild(cruiser);
 fleetCont.appendChild(submarine);
 fleetCont.appendChild(destroyer);
+fleetCont.appendChild(direction);
 
 export {
     view,
