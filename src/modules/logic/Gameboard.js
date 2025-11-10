@@ -21,19 +21,20 @@ class Gameboard{
             } 
             for(let i = 0;i <shipLength; i++){
                 this.grid[y][x + i]= ship;
+                ship.setPosition([y, x+ i])
             }  
 
         }
         if(direction === "vertical"){
             if(y+ shipLength > this.grid.length)throw new Error('ship out of bounds vertically');
             for(let i = 0; i < shipLength; i++){
-                if(this.grid[y+1][x]!== null) throw new Error('Position occupied');
+                if(this.grid[y+ i][x]!== null) throw new Error('Position occupied');
             }
             for(let i = 0; i < shipLength; i++){
                 this.grid[y+i][x]= ship;
+                ship.setPosition([y + i, x])
             }
         } 
-
     }
     //if coordinate is null meaning no ship,
     // - set coordinate to false indicating the coordinate is no longer an option;

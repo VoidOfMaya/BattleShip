@@ -1,6 +1,7 @@
 class Ship{
     #length = 0;
     #damage = 0;
+    #positions =[];
 
     #isSunk = false;
     constructor(length, name){
@@ -18,7 +19,18 @@ class Ship{
     getIsSunk = () =>{
         return this.#isSunk;
     };
+    getPositions(){
+        return this.#positions;
+    };
+
     //set
+    setPosition(pos){
+        this.#positions.push(pos);
+        
+    };
+    resetPositions(){
+        this.#positions = [];
+    }
     hit = (x) =>{
         this.#damage = this.#damage + x;
         this.#sinkShip();
@@ -27,6 +39,7 @@ class Ship{
         if(!this.#isSunk && this.#damage === this.#length) this.#isSunk = true;
 
     }
+    
 
 }
 

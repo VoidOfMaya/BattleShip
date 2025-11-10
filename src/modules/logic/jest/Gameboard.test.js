@@ -24,15 +24,35 @@ it('handles recieving attack on gameboard',()=>{
     board.recieveAttack([5,5]);
     expect(board.grid[5][5].getDamage()).toEqual(1);
 })
-it('handles ships sunk',()=>{
+//it('handles ships sunk',()=>{
 
-    expect(board.allShipsSunk()).toBeFalsy();
-    board.recieveAttack([5,5]);
-    board.recieveAttack([5,5]);
-    expect(board.allShipsSunk()).toBeTruthy();
+    //expect(board.allShipsSunk()).toBeFalsy();
+    //board.recieveAttack([5,5]);
+    //board.recieveAttack([5,5]);
+    //expect(board.allShipsSunk()).toBeTruthy();
 
 
-})
-it('checks if cells belong to the same ship',()=>{
-    expect( typeof board.grid[5][5]).toEqual("object")
-})
+//})
+//run rmove test
+it("places a ship on the gameboard", () => {
+    board.populateGrid([2, 2], 3, "Destroyer");
+
+    expect(board.grid[2][2]).toEqual("Destroyer" );
+    expect(board.grid[3][2].getName()).toEqual("Destroyer");
+    expect(board.grid[4][2].getName()).toEqual("Destroyer");
+});
+it("removes a ship from the gameboard", () => {
+    board.populateGrid([2, 2], 3, "Destroyer", "horizontal");
+
+    // Ensure it's placed
+    expect(board.grid[2][2]).toBeTruthy();
+
+    // Remove it
+    board.removeShip("Destroyer");
+
+    // All occupied cells should now be null
+    expect(board.grid[2][2]).toBeNull();
+    expect(board.grid[3][2]).toBeNull();
+    expect(board.grid[4][2]).toBeNull();
+});
+

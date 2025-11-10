@@ -48,12 +48,13 @@ const gameState =()=>{
     router.addEventListener('click', statehandler)
 }
 const syncGrid = (playerGrid )=>{
+    gridSyncRester()
 
     playerGrid.forEach((logicRow, yIndex) =>{
 
         logicRow.forEach((logicCell, xIndex) =>{
             if(logicCell instanceof Ship){
-                gridSyncRester();
+             
                 //get dom cells
                 const logicCellId = `${xIndex},${yIndex}`                
                 const cells = settingGrid.querySelectorAll('.cell');
@@ -72,7 +73,9 @@ const syncGrid = (playerGrid )=>{
 }
 const gridSyncRester = ()=>{
     const cells = settingGrid.querySelectorAll('.cell');
-    cells.entries(cell=>cell.style.backgroundColor = "#ffffffff")
+    cells.forEach(cell=>{
+        cell.style.backgroundColor = "#ffffffff";
+    })
 }
 
 const addEventListenerTocells = (player)=>{
@@ -94,9 +97,25 @@ const handleCellClick = (id, player)=>{
     const[row, col] = id.split(',').map(Number);
     const grid = player.gameboard.getGrid();
     const cellData =grid[col][row];
-    if(!selectedShip){
+    if(!selectedShip && !movingship){
         console.log(cellData? `this cell contains ${cellData.name}`: "this cell is empty");
         return
+    }
+    if(cellData instanceof Ship && !movingship){
+        movingship = cellData;
+        console.log(`selected ship to move: ${movingship.name}`);
+        return;
+    }
+    if(movingship){
+        try{
+            shipMoveHandler(player, movingship, row, col, orientation);
+        movingship = null;
+        syncGrid(grid);
+        console.log(`ship moved successfully.`);
+        console.log(player.gameboard.grid);
+        }catch{
+            console.error(`can not move ship : ${err.message}`);
+        }
     }
     if(placedShips.includes(selectedShip)){
         console.log(cellData? `this cell contains ${cellData.name}`: "this cell is empty");
@@ -111,7 +130,7 @@ const handleCellClick = (id, player)=>{
         shipDiv.style.pointerEvents = 'none';
         shipDiv.style.opacity = '0.5';  
         console.log(player.gameboard.grid);
-        console.log(`this cell contains: ${cellData}`);
+        console.log(cellData? `this cell contains ${cellData.name}`: "this cell is empty");
     }
 }
 const getShipByName = (shipName)=>{
@@ -124,6 +143,16 @@ const getShipByName = (shipName)=>{
     ];
     return fleet.find(ship=>ship.name === shipName);
 }
+const shipMoveHandler=(player, ship, newStartX, newStartY, direction)=>{
+        ship.getPositions().forEach(([y, x])=>{
+            player.gameboard.grid[y][x]= null;
+        });
+        ship.resetPositions();
+
+        player.gameboard.populateGrid([newStartX,newStartY], ship.getLength(), ship.name, direction);
+        syncGrid(player.gameboard.getGrid());
+
+    }
 
 
 const battleship=()=>{
