@@ -89,22 +89,13 @@ const addEventListenerTocells = (player)=>{
 let placedShips = [];
 let movingship = null;
 const handleCellClick = (id, player)=>{
-    //if(!selectedShip){
-    //    alert('Please select a ship first');
-    //    return
-    //}
-    //if(placedShips.includes(selectedShip)){
-    //    alert(`you already placed the  ${selectedShip}! please select an other one`);
-    //    console.log()
-    //    return;
-    //}
 
-    
+
     const[row, col] = id.split(',').map(Number);
     const grid = player.gameboard.getGrid();
     const cellData =grid[col][row];
     if(!selectedShip){
-        console.log(`this cell contains: ${JSON.stringify(cellData)}`);
+        console.log(cellData? `this cell contains ${cellData.name}`: "this cell is empty");
         return
     }
     if(placedShips.includes(selectedShip)){
