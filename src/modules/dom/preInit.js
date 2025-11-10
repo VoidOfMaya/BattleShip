@@ -1,3 +1,4 @@
+let gameMode = null;
 const view = document.createElement('div');
 view.style.display = "none";
 view.style.alignSelf = "center";
@@ -20,15 +21,23 @@ title.style.justifySelf="center";
 
 const pvp = document.createElement('div');
 pvp.innerHTML = "Player vs. Player";
+pvp.id = 'pvp';
 pvp.style.gridArea= "pvp";
 pvp.style.justifySelf = "center";
 pvp.className = "in-button";
+pvp.addEventListener('click',()=>{
+    gameMode = pvp.id;
+})
 
 const pvnpc = document.createElement('div');
 pvnpc.innerHTML = "Player vs. Computer";
+pvp.id = 'pvnpc';
 pvnpc.style.gridArea="pvnpc";
 pvnpc.style.justifySelf = "center";
 pvnpc.className = "in-button";
+pvnpc.addEventListener('click',()=>{
+    gameMode = pvnpc.id;
+})
 
 view.appendChild(title);
 view.appendChild(pvp);
@@ -37,5 +46,6 @@ view.appendChild(pvnpc);
 
 
 export {
-    view
+    view,
+    gameMode
 }
