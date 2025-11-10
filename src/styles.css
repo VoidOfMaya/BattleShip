@@ -15,6 +15,9 @@ body{
   padding: 10px;
   border-radius: 10px;
   box-shadow: 8px 8px 18px -18px rgba(66, 68, 90, 1);
+  justify-self: center;
+  align-self: center;
+  margin: 5px
 }
 .in-button:hover{
   background-color: #fdfeff;
