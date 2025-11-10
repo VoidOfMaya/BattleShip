@@ -48,17 +48,24 @@ const statehandler=()=>{
 const gameState =()=>{
     router.addEventListener('click', statehandler)
 }
+//ui handlers
+const addHoverPreview = (player)=>{
+    const cells =settingGrid.querySelectorAll('.cell');
+    cells.forEach(cell=>{
+
+    })
+}
 const syncGrid = (playerGrid )=>{
     gridSyncRester()
 
     playerGrid.forEach((logicRow, yIndex) =>{
-
         logicRow.forEach((logicCell, xIndex) =>{
             if(logicCell instanceof Ship){
-             
                 //get dom cells
                 const logicCellId = `${xIndex},${yIndex}`                
                 const cells = settingGrid.querySelectorAll('.cell');
+
+                //check ship placement in the gameboard 2Darray
                 
                 cells.forEach(cell=>{
                     if(cell.id === logicCellId){
@@ -88,51 +95,68 @@ const addEventListenerTocells = (player)=>{
             const clickedId = e.target.id;
             handleCellClick(clickedId, player);
         })
+        cell.addEventListener('mouseover',(e)=>{
+            const[row, col]= e.target.id.split(',').map(Number)
+            ;            
+            if(selectedShip && !movingship){
+                const ship = getShipByName(selectedShip);
+                highlightPreview(player, row, col, ship.length, orientation);
+            }
+            if(movingship){
+                highlightPreview(player, row, col, movingship.getLength(), orientation);
+            }
+        })
+        cell.addEventListener("mouseout",()=>{
+            resetPreview();
+        })
     })
 }
 let placedShips = [];
 let movingship = null;
+//handles click
 const handleCellClick = (id, player)=>{
-
-
     const[row, col] = id.split(',').map(Number);
     const grid = player.gameboard.getGrid();
     const cellData =grid[col][row];
-    if(!selectedShip && !movingship){
-        console.log(cellData? `this cell contains ${cellData.name}`: "this cell is empty");
-        return
-    }
+
+    //no ship selected, no ship moving currently
+    if(!selectedShip && !movingship) return;
+
+    //handels ship selection for movement
     if(cellData instanceof Ship && !movingship){
         movingship = cellData;
         console.log(`selected ship to move: ${movingship.name}`);
         return;
     }
+    //handels an already moving ship
     if(movingship){
         try{
+            
             shipMoveHandler(player, movingship, row, col, orientation);
-        movingship = null;
-        syncGrid(grid);
-        console.log(`ship moved successfully.`);
+            movingship = null;
+            syncGrid(grid);
+            console.log(`ship moved successfully.`);
     
         }catch{
-            console.error(`can not move ship : ${err.message}`);
+            console.error(`Cannot move ship `);
         }
     }
+    //prevents duplicates
     if(placedShips.includes(selectedShip)){
-        console.log(cellData? `this cell contains ${cellData.name}`: "this cell is empty");
-        return
+        console.log(`Ship "${selectedShip}" already placed.`);
+        return;
     }else{
-    const ship = getShipByName(selectedShip);
+        const ship = getShipByName(selectedShip);
         player.gameboard.populateGrid([row,col], ship.length, selectedShip, orientation);
         placedShips.push(selectedShip);
-        console.log(`[${row},${col}]`)
         syncGrid(grid);
+
+        //disable the ship btn in ui
         const shipDiv = document.getElementById(selectedShip);
         shipDiv.style.pointerEvents = 'none';
         shipDiv.style.opacity = '0.5';  
-        console.log(cellData? `this cell contains ${cellData.name}`: "this cell is empty");
     }
-    console.log(placedShips.length);
+    //check if all ships are placed
     if(placedShips.length === 5){
         
         fleetSetView.appendChild(nextStage);
@@ -157,12 +181,40 @@ const shipMoveHandler=(player, ship, newStartX, newStartY, direction)=>{
             player.gameboard.grid[y][x]= null;
         });
         ship.resetPositions();
-
         player.gameboard.populateGrid([newStartX,newStartY], ship.getLength(), ship.name, direction);
         syncGrid(player.gameboard.getGrid());
 
     }
+//handels prieview
+const highlightPreview = (player, startR, startC, length, direction)=>{
+    resetPreview();
+    const cells = settingGrid.querySelectorAll('.cell');
+    for (let i = 0; i < length; i++) {
+        let row = startR;
+        let col = startC;
 
+        if (direction === 'horizontal') row += i;
+        if (direction === 'vertical') col += i;
+
+        const cell = Array.from(cells).find(c => c.id === `${row},${col}`);
+        if (cell) {
+            cell.dataset.preview = 'true'; // mark for reset later
+            cell.style.outline = '2px solid #00bfff'; // preview color
+            cell.style.outlineOffset = '-2px';
+        }
+    }
+
+}
+const resetPreview=()=>{
+    const cells = settingGrid.querySelectorAll('.cell');
+
+    cells.forEach(cell => {
+        if (cell.dataset.preview) {
+            cell.style.outline = 'none'; // reset to default
+            delete cell.dataset.preview;
+        }
+    });
+}
 
 const battleship=()=>{
     const mainPlayer = new Player();
