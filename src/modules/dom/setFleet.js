@@ -20,7 +20,7 @@ view.style.gridTemplateRows = "1fr 4fr 1fr";
 view.style.gridTemplateAreas = `
 ". title ."
 "choices grid ."
-". .  ."`
+". next  ."`
 
 const title = document.createElement('div');
 title.style.gridArea = "title";

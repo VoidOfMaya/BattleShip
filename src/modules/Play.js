@@ -5,6 +5,7 @@ import { view as observeView} from "./dom/observe";
 import { view as initView} from "./dom/preInit";
 import { view as fleetSetView } from "./dom/setFleet";
 import { selectedShip, orientation} from "./dom/fleetSelect";
+import { nextStage } from "./dom/nextstageBtn";
 //import grids
 import { Ship } from "./logic/Ship";
 import { grid as settingGrid } from './dom/setFleet'
@@ -131,6 +132,11 @@ const handleCellClick = (id, player)=>{
         shipDiv.style.opacity = '0.5';  
         console.log(player.gameboard.grid);
         console.log(cellData? `this cell contains ${cellData.name}`: "this cell is empty");
+    }
+    console.log(placedShips.length);
+    if(placedShips.length === 5){
+        
+        fleetSetView.appendChild(nextStage);
     }
 }
 const getShipByName = (shipName)=>{
