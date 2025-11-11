@@ -50,8 +50,9 @@ const gameStart = async ()=>{
             playerB = new Player(true);
             
         }else if(mode === 'pvp'){
-            playerA = new Player();
-            playerB = new Player();
+            //playerA = new Player();
+            //playerB = new Player();
+            console.warn(`currently unavailable`)
             
         }
         await fleetPlacement(playerA, playerB, mode);
