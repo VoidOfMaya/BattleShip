@@ -112,7 +112,7 @@ const handleCellClick = (id, player)=>{
         fleetSetView.appendChild(nextStage);
         nextStage.addEventListener('click',()=>{
             console.log(`button triggered`);
-            console.log(player.gameboard.grid);
+            return nextStage.id;
         })
     }
 }
@@ -168,4 +168,5 @@ const resetPreview=()=>{
 
 export{
     addEventListenerTocells,
+    nextStage
 }
