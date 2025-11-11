@@ -38,7 +38,7 @@ class Gameboard{
     }
     //if coordinate is null meaning no ship,
     // - set coordinate to false indicating the coordinate is no longer an option;
-    recieveAttack([x, y]){
+    Attack([x, y]){
         const cell = this.grid[y][x];
 
         if(cell === null) this.grid[y][x] = false;

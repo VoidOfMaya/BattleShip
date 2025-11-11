@@ -4,7 +4,7 @@ import { nextStage } from "./dom/nextstageBtn";
 //import grids
 import { Ship } from "./logic/Ship";
 import { grid as settingGrid } from './dom/setFleet'
-//ui handlers
+//grid ui handlers
 const syncGrid = (playerGrid )=>{
     gridSyncRester()
 
@@ -36,6 +36,7 @@ const gridSyncRester = ()=>{
     })
 }
 
+//cell listeners
 const addEventListenerTocells = (player)=>{
 
     const cells = settingGrid.querySelectorAll('.cell');
@@ -165,8 +166,22 @@ const resetPreview=()=>{
         }
     });
 }
+const resetFleet = ()=>{
+    placedShips = [];
+    movingship = null;
+    gridSyncRester();
+    const shipButtons = document.querySelectorAll('.ship-btn');
+    shipButtons.forEach(button =>{
+        button.pointerEvents = 'auto';
+        button.style.opacity = '1';
+    })
+    if(nextStage.parentElement){
+        nextStage.remove();
+    }
+}
 
 export{
     addEventListenerTocells,
+    resetFleet,
     nextStage
 }

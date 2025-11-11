@@ -27,5 +27,6 @@ view.appendChild(title);
 
 
 export {
-    view
+    view,
+    grid
 }

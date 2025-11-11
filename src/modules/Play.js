@@ -4,10 +4,14 @@ import { view as attackView} from "./dom/Attack";
 import { view as observeView} from "./dom/observe";
 import { view as initView, gameMode} from "./dom/preInit";
 import { view as fleetSetView } from "./dom/setFleet";
-import { addEventListenerTocells, nextStage } from "./fleetSetFlow";
+import { addEventListenerTocells, nextStage } from "./fleetSetup";
+import { handleAttacking } from "./stages/battleStage";
 //import grids
 import { Ship } from "./logic/Ship";
 import { grid as settingGrid } from './dom/setFleet'
+import { showMenu } from "./stages/menuStage";
+import { fleetPlacement } from "./stages/fleetSetupStage";
+import { battle } from "./stages/battleStage";
 
 /**
  * sudo game flow
@@ -28,124 +32,44 @@ import { grid as settingGrid } from './dom/setFleet'
  */ 
 
 
-let currentMode = 0
-const statehandler=()=>{
-    /*
-    if(!container.hasChildNodes()){
-        gameModes.forEach(mode =>{
-            container.appendChild(mode);
-            mode.style.display = 'none'; 
-        });
-        gameModes[0].style.display = 'grid'; 
-    }
-    gameModes[currentMode].style.display = 'none';
-    currentMode = (currentMode + 1)% gameModes.length;
-    gameModes[currentMode].style.display= "grid";
-    */
-    
-}
-/*
-const gameState =()=>{
-    //router.addEventListener('click', statehandler)
-    if(!container.hasChildNodes()){
-        gameModes.forEach(mode=>{
-            container.appendChild(mode);
-            mode.style.display = 'none';
-        });
-        gameModes[currentMode].style.display = 'grid';
-    }else{
-        gameModes[currentMode].style= 'none';
-        currentMode = (currentMode + 1)% gameModes.length;
-        gameModes[currentMode].style.display='grid';
-    }
-}
-*/
-//menu
-const gameStages ={
-    pvp: [fleetSetView, attackView, observeView],
-    pvnpc: [fleetSetView, attackView, observeView]
-};
 
-const gameRouter = async (mode, currentStageIndex = 0)=>{
-    //appendchildren to container  and hide:
-    const stages = gameStages[mode]
-    stages.forEach(stage => {
-        container.appendChild(stage);
-        stage.style.display = 'none';
-    });
-    //set current stage and display
-    const currentStage = gameStages[mode][currentStageIndex];
-    
-    currentStage.style.display = "grid";
 
-    await waitForUserAction(currentStage, mode, currentStageIndex);
-};
-// waits for stage to complete, by a click event on next stage
-const waitForUserAction = async(currentStage, mode, currentStageIndex)=>{
-    return new Promise(resolve => {
-        let nextButton;
-        //run game flow based on  game mode
-        if(mode ==='pvnpc' && currentStageIndex === 0){
-            pvnpcFleetHandler();
-            nextButton = nextStage;
-            console.log(nextButton);
-        }
-        if(mode ==='pvp' && currentStageIndex === 0){
-            console.warn(`Mode not available yet!`);
-        }else{
-            console.error("Something went wrong!");
-        }
-        
-        //progress the gamestage by clicking  the next button
-        if(nextButton){
-            nextButton.addEventListener('click',()=>{
-                currentStage.style.display ='none';
-
-                if(currentStageIndex < gameStages[mode].length - 1){
-                    currentStageIndex++;
-                    currentStage = gameStages[mode][currentStageIndex];
-                    currentStage.style.display = 'grid';
-                };
-
-            });
-            resolve();
-        };
-        
-            
-    });
-};
 //initiates game and prompts for game mode
-const gameStart = ()=>{
-    let currentM = initView;
-    let mode;
-    container.appendChild(currentM);
-    currentM.style.display = 'grid';
-    const pvpBtn =document.getElementById('pvp');
-    const pvnpcBtn =document.getElementById('pvnpc');
-    //sets mode to player vs player
-    pvpBtn.addEventListener('click',()=>{
-        mode = "pvp";
-        //currentM.style.display ='none';
-        //gameRouter(mode);
-        console.warn(`Mode not available yet!`);
-        
-    })
-    //sets mode to player vs computer
-    pvnpcBtn.addEventListener('click',()=>{
-        mode = "pvnpc";
-        currentM.style.display ='none';
-        gameRouter(mode);
+const gameStart = async ()=>{
+   //==>new implementation<==
+   let playAgain =true;
+   //setsgame mode
+   //global players:
+   while(playAgain){
+    let playerA;
+    let playerB
+    const mode = await showMenu();
+    //fleet setup
+        if(mode === 'pvnpc'){
+            playerA = new Player();
+            playerB = new Player(true);
+            
+        }else if(mode === 'pvp'){
+            playerA = new Player();
+            playerB = new Player();
+            
+        }
+        await fleetPlacement(playerA, playerB, mode);
+    
+        //battle loop
+        const winner = await battle(mode);
+        //end
+        await showEnd(winner);
 
-        
-    })
+        //prompt new game
+        playAgain =await newGame();
+    }
+
+
+
 }
 
 //handles player vs npc game  flow
-const pvnpcFleetHandler=()=>{
-    const mainPlayer = new Player();
-    const aiPlayer = new Player(true);
-    addEventListenerTocells(mainPlayer);
-}
 
 const battleship=()=>{
 
