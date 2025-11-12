@@ -19,7 +19,7 @@ view.style.gridTemplateRows = "1fr 4fr 1fr";
 
 view.style.gridTemplateAreas = `
 ". title ."
-"choices grid ."
+"choices gridA ."
 ". next  ."`
 
 const title = document.createElement('div');
@@ -27,7 +27,8 @@ title.style.gridArea = "title";
 title.innerHTML = "position your fleet";
 title.style.alignSelf = "center";
 title.style.justifySelf = "center";
-const {grid, cells} = createBoard();
+const {grid, cells} = createBoard('playerA');
+grid.style.gridArea= "gridA";
 
 view.appendChild(fleetCont);
 view.appendChild(grid);

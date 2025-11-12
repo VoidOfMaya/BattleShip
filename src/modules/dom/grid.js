@@ -1,10 +1,10 @@
 
-const createBoard =()=>{
+const createBoard =(boardId)=>{
     const grid = document.createElement('div');
     grid.style.display = "grid";
-    grid.id ='Gameboard';
+    grid.id =boardId;
     grid.style.gap = "2px";
-    grid.style.gridArea = "grid";
+    grid.style.padding = "10px"
     grid.style.backgroundColor= "#d6d6d6ff";
     grid.style.gridTemplateColumns = 'repeat(10, 1fr)';
     grid.style.gridTemplateRows = 'repeat(10, 1fr)';
