@@ -7,6 +7,10 @@ class Player{
         this.gameboard= new Gameboard();
         this.#isAi= enableAi
     }
+    isComputer(){
+        if(this.#isAi) return true;
+        else return false;
+    }
     genFleet(){
         if(this.#isAi){
             const fleet = [

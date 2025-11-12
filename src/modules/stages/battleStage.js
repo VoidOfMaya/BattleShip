@@ -26,6 +26,8 @@ const handlePvNpc = async (playerA, playerB)=>{
                 title.innerHTML ="Your turn! to attack";
                 gridSyncRester(gridA)
                 displayPlayerGrid(playerA.gameboard.getGrid(),gridA);
+                console.log(playerA.isComputer());
+                addAttackEventListener(playerA, gridA);
                 winner = true
                 
             }
@@ -65,6 +67,23 @@ const gridSyncRester = (uiGameboard)=>{
     cells.forEach(cell=>{
         cell.style.backgroundColor = "#ffffffff";
     })
+}
+const addAttackEventListener = (player, grid)=>{
+    const cells = grid.querySelectorAll('.cell')
+    cells.forEach(cell =>{
+        cell.addEventListener('mouseover',()=>{
+            cell.style.outline = '2px solid green';
+            cell.style.outlineOffset = '-2px';
+        })
+            cell.addEventListener('mouseout',()=>{
+            cell.style.outline = 'none';
+            cell.style.outlineOffset = '0px';
+        })
+        cell.addAttackEventListener('click', clickHandler());
+    })
+}
+const clickHandler=()=>{
+
 }
 
 
