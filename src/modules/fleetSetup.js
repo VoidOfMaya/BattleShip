@@ -1,9 +1,14 @@
 import { view as fleetSetView } from "./dom/setFleet";
 import { selectedShip, orientation} from "./dom/fleetSelect";
-import { nextStage } from "./dom/nextstageBtn";
+import { createNextBtn } from "./dom/nextstageBtn";
 //import grids
 import { Ship } from "./logic/Ship";
-import { grid as settingGrid } from './dom/setFleet'
+import { grid as settingGrid } from './dom/setFleet';
+
+//progress button
+const next =createNextBtn('nextstage', fleetSetView);
+next.style.display = 'none';
+
 //grid ui handlers
 const syncGrid = (playerGrid )=>{
     gridSyncRester()
@@ -109,12 +114,11 @@ const handleCellClick = (id, player)=>{
     }
     //check if all ships are placed
     if(placedShips.length === 5){
-        
-        fleetSetView.appendChild(nextStage);
-        nextStage.addEventListener('click',()=>{
-            console.log(`button triggered`);
-            return nextStage.id;
-        })
+        next.style.display = 'block';
+        //next.addEventListener('click',()=>{
+        //    console.log(`button triggered`);
+        //    return next.id;
+        //})
     }
 }
 const getShipByName = (shipName)=>{
@@ -175,13 +179,13 @@ const resetFleet = ()=>{
         button.pointerEvents = 'auto';
         button.style.opacity = '1';
     })
-    if(nextStage.parentElement){
-        nextStage.remove();
+    if(fleetSetView.contains(next)){
+        next.style.display = 'none';
     }
 }
 
 export{
     addEventListenerTocells,
     resetFleet,
-    nextStage
+    next
 }

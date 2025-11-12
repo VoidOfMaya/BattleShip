@@ -1,10 +1,14 @@
-const nextStage = document.createElement('div');
-nextStage.innerHTML = "move to next stage";
-nextStage.style.gridArea= "next";
-nextStage.className = "in-button";
-nextStage.id = "next";
 
+const createNextBtn=(label, parent)=>{
+    const btn = document.createElement('div');
+    btn.innerHTML = label;
+    btn.style.gridArea= "next";
+    btn.className = "in-button";
+    btn.id = "next"; 
+    parent.appendChild(btn);
+    return btn  
+}
 
 export {
-    nextStage
+    createNextBtn,
 }
