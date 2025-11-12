@@ -27,6 +27,7 @@ const handlePvNpc = async (playerA, playerB)=>{
                 gridSyncRester(gridA)
                 displayPlayerGrid(playerA.gameboard.getGrid(),gridA);
                 addAttackEventListener(playerB, gridB);
+                stage = 'observe';
                 
                 
             }else if(stage = 'observe'){
@@ -85,39 +86,27 @@ const addAttackEventListener = (player, grid)=>{
             cell.style.outline = 'none';
             cell.style.outlineOffset = '0px';
         })
-        cell.addEventListener('click', ()=>{clickHandler(player.gameboard.getGrid(), cell)});
+        cell.addEventListener('click', ()=>{clickHandler(player.gameboard, cell)});
     })
 }
 const clickHandler=(playerGrid,cell)=>{
+ 
+    const [y, x] = cell.id.split(',').map(Number);
+    const hitStatus =  playerGrid.recieveAttack([y, x]);
 
-    playerGrid.forEach((row, rIndex)=>{
-        row.forEach((col, cIndex)=>{
-            const cellId =`${cIndex},${rIndex}`
-            if(cell.id === cellId){
-                // hit
-                console.log(col instanceof Ship)
-                if(col instanceof Ship){
-                    console.log(col.getDamage())
-                    console.log(col.getLength())
-                    console.log(col.getIsSunk())
-                    if(col.getDamage()< col.getLength() && !col.getIsSunk()){
-                        col.hit();
-                        cell.style.backgroundColor = "gray";
-                        cell.style.pointerEvents = 'none';
-                        cell.style.opacity='0.5';
-                        console.log(cell)
-                    }
-                }else if( col === null){
-                    //miss
-                    
-                    cell.style.pointerEvents = 'none';
-                    cell.style.opacity = '0.5'; 
-                    col = false;
-                }
+    console.log(hitStatus);
+    if(hitStatus){  
+        //hit         
+        cell.style.backgroundColor = "black";
+        cell.style.pointerEvents = 'none';
+        cell.style.opacity='0.5';
                 
-            }
-        })
-    })
+    }else if(!hitStatus){
+        //miss
+        cell.style.pointerEvents = 'none';
+        cell.style.opacity = '0.5';         
+    }
+
 }
 
 

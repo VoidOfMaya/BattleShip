@@ -38,12 +38,15 @@ class Gameboard{
     }
     //if coordinate is null meaning no ship,
     // - set coordinate to false indicating the coordinate is no longer an option;
-    Attack([x, y]){
+    recieveAttack([x, y]){
         const cell = this.grid[y][x];
 
-        if(cell === null) this.grid[y][x] = false;
-        else  if(cell instanceof Ship){
+        if(cell === null){
+            this.grid[y][x] = false;
+            return false
+        }else  if(cell instanceof Ship){
             cell.hit(1);
+            return true;
         }
     }
     //returns false if atleast one ship is still afloat returns true if all ships are sunk
