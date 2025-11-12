@@ -24,7 +24,7 @@ const syncGrid = (playerGrid )=>{
                 
                 cells.forEach(cell=>{
                     if(cell.id === logicCellId){
-                        console.log(cell.id);
+                        //console.log(cell.id);
                         cell.style.backgroundColor = "#6cf1e6ff";
                     }
                 })
@@ -81,7 +81,7 @@ const handleCellClick = (id, player)=>{
     //handels ship selection for movement
     if(cellData instanceof Ship && !movingship){
         movingship = cellData;
-        console.log(`selected ship to move: ${movingship.name}`);
+        //console.log(`selected ship to move: ${movingship.name}`);
         return;
     }
     //handels an already moving ship

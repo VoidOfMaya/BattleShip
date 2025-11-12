@@ -39,7 +39,7 @@ const gameStart = async ()=>{
         await fleetPlacement(playerA, playerB, mode);
     
         //battle loop
-        const winner = await battle(mode);
+        const winner = await battle(playerA, playerB, mode);
         //end
         await showEnd(winner);
 
@@ -48,7 +48,7 @@ const gameStart = async ()=>{
     }
 }
 const newGame = async () =>{
-    
+
 }
 
 const battleship=()=>{
