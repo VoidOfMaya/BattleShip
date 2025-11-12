@@ -9,11 +9,11 @@ const battle= async (playerA,playerB, mode)=>{
 
     
     if(mode === 'pvnpc'){
-        handlePvNpc();
+        handlePvNpc(playerA, playerB);
     }
 
 }
-const handlePvNpc = async ()=>{
+const handlePvNpc = async (playerA, playerB)=>{
     return new Promise(resolve =>{
 
         let stage = 'attack';
