@@ -16,21 +16,28 @@ const battle= async (playerA,playerB, mode)=>{
 }
 const handlePvNpc = async (playerA, playerB)=>{
     return new Promise(resolve =>{
-
+        attackView.style.display = "grid";
         let stage = 'attack';
         let winner = false;
         while(!winner){
             if(stage === 'attack'){
+                //player attacks
+
+                title.innerHTML ="Your turn to attack!";
+                gridSyncRester(gridA)
+                displayPlayerGrid(playerA.gameboard.getGrid(),gridA);
+                addAttackEventListener(playerB, gridB);
                 
-                attackView.style.display = "grid";
-                title.innerHTML ="Your turn! to attack";
+                
+            }else if(stage = 'observe'){
+                //computer attacks
+                title.innerHTML ="Computers turn to attack!";
                 gridSyncRester(gridA)
                 displayPlayerGrid(playerA.gameboard.getGrid(),gridA);
                 console.log(playerA.isComputer());
-                addAttackEventListener(playerA, gridA);
-                winner = true
-                
+                addAttackEventListener(playerA, gridB);
             }
+            winner = true
         }
         //if(winner){
         //    resolve();
@@ -44,8 +51,7 @@ const displayPlayerGrid = (playerGrid , uiGameboard)=>{
     playerGrid.forEach((logicRow, yIndex) =>{
         logicRow.forEach((logicCell, xIndex) =>{
             if(logicCell instanceof Ship){
-                //get dom cells
-                console.log(`Ship found at ${xIndex}, ${yIndex}`);           
+                //get dom cells          
                 const logicCellId = `${xIndex},${yIndex}`                
                 const cells = uiGameboard.querySelectorAll('.cell');
 
@@ -79,11 +85,39 @@ const addAttackEventListener = (player, grid)=>{
             cell.style.outline = 'none';
             cell.style.outlineOffset = '0px';
         })
-        cell.addAttackEventListener('click', clickHandler());
+        cell.addEventListener('click', ()=>{clickHandler(player.gameboard.getGrid(), cell)});
     })
 }
-const clickHandler=()=>{
+const clickHandler=(playerGrid,cell)=>{
 
+    playerGrid.forEach((row, rIndex)=>{
+        row.forEach((col, cIndex)=>{
+            const cellId =`${cIndex},${rIndex}`
+            if(cell.id === cellId){
+                // hit
+                console.log(col instanceof Ship)
+                if(col instanceof Ship){
+                    console.log(col.getDamage())
+                    console.log(col.getLength())
+                    console.log(col.getIsSunk())
+                    if(col.getDamage()< col.getLength() && !col.getIsSunk()){
+                        col.hit();
+                        cell.style.backgroundColor = "gray";
+                        cell.style.pointerEvents = 'none';
+                        cell.style.opacity='0.5';
+                        console.log(cell)
+                    }
+                }else if( col === null){
+                    //miss
+                    
+                    cell.style.pointerEvents = 'none';
+                    cell.style.opacity = '0.5'; 
+                    col = false;
+                }
+                
+            }
+        })
+    })
 }
 
 
