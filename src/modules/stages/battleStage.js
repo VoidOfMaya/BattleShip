@@ -10,15 +10,16 @@ const battle= async (playerA,playerB, mode)=>{
 
     
     if(mode === 'pvnpc'){
-        handlePvNpc(playerA, playerB);
+        await handlePvNpc(playerA, playerB);
     }
 
 }
 const handlePvNpc = async (playerA, playerB)=>{
-    return new Promise(resolve =>{
+    return new Promise(async resolve =>{
         attackView.style.display = "grid";
         let stage = 'attack';
         let winner = false;
+
         while(!winner){
             if(stage === 'attack'){
                 //player attacks
@@ -26,26 +27,53 @@ const handlePvNpc = async (playerA, playerB)=>{
                 title.innerHTML ="Your turn to attack!";
                 gridSyncRester(gridA)
                 displayPlayerGrid(playerA.gameboard.getGrid(),gridA);
+
+                toggleEventListener(gridA, 'none');
+                toggleEventListener(gridB, 'auto');
                 addAttackEventListener(playerB, gridB);
-                stage = 'observe';
-                
-                
-            }else if(stage = 'observe'){
+
+                await waitForAttack(gridB);
+
+                console.log(`fleet A status sunk:${playerA.gameboard.allShipsSunk()}`);
+                console.log(`fleet B status sunk:${playerB.gameboard.allShipsSunk()}`);
+                if(playerB.gameboard.allShipsSunk()){
+                    winner = true;
+                    title.innerHTML ="you are the winner";
+                }else{
+                    stage = 'observe';  
+                }    
+            }
+            else if(stage === 'observe'){
                 //computer attacks
                 title.innerHTML ="Computers turn to attack!";
                 gridSyncRester(gridA)
                 displayPlayerGrid(playerA.gameboard.getGrid(),gridA);
-                console.log(playerA.isComputer());
-                addAttackEventListener(playerA, gridB);
+                
+                toggleEventListener(gridA, 'none');
+                toggleEventListener(gridB, 'none');
+                //addAttackEventListener(playerA, gridA);
+                await new Promise(resolve=> {setTimeout(resolve, 2000)});
+                await waitComputerAttack(playerB, playerA, gridA)
+
+                await new Promise(resolve=> {setTimeout(resolve, 1000)});
+
+                console.log(`fleet A status sunk:${playerA.gameboard.allShipsSunk()}`);
+                console.log(`fleet B status sunk:${playerB.gameboard.allShipsSunk()}`);
+                
+            if(playerA.gameboard.allShipsSunk()){
+                    winner = true;
+                    title.innerHTML ="you are the winner";
+                }else{
+                    stage = 'attack';  
+                }    
             }
-            winner = true
         }
-        //if(winner){
-        //    resolve();
-        //}        
+        resolve();
+ 
     })
 
 }
+//ui updaters
 const displayPlayerGrid = (playerGrid , uiGameboard)=>{
     
 
@@ -75,6 +103,53 @@ const gridSyncRester = (uiGameboard)=>{
         cell.style.backgroundColor = "#ffffffff";
     })
 }
+//asyncronus attacks
+const waitForAttack = (grid) =>{
+    return new Promise(resolve => {
+        grid.addEventListener('click',(e)=>{
+            if(e.target.classList.contains('cell')){
+              resolve(e.target);  
+            }     
+        },{once:true});
+    })
+}
+const waitComputerAttack =async(player, opponent, grid)=>{
+    return new Promise(resolve=> {
+        const { hit, x, y} = player.aiAttack(opponent);
+        const cellId = `${x},${y}`
+        let cell;
+        const cells = grid.querySelectorAll('.cell');
+        cells.forEach(item=>{
+            if (item.id === cellId) {
+                cell = item;
+            }
+        })
+        console.log(cell)
+                    
+        if(cell){
+            if(hit){
+                cell.style.backgroundColor = "red";
+                cell.style.pointerEvents = 'none';
+                cell.style.opacity = '0.5';       
+            }else{
+                cell.style.pointerEvents = 'none';
+                cell.style.opacity ='0.5';
+            }
+        }  else{
+            console.error(`cell with id ${cellId} not found`)
+        } 
+        resolve();
+           
+    })
+} 
+
+//handles event listeners
+const toggleEventListener=(grid, state)=>{
+    const cells = grid.querySelectorAll('.cell');
+    cells.forEach(cell=>{
+        cell.style.pointerEvents = state;
+    })
+}
 const addAttackEventListener = (player, grid)=>{
     const cells = grid.querySelectorAll('.cell')
     cells.forEach(cell =>{
@@ -89,6 +164,8 @@ const addAttackEventListener = (player, grid)=>{
         cell.addEventListener('click', ()=>{clickHandler(player.gameboard, cell)});
     })
 }
+
+
 const clickHandler=(playerGrid,cell)=>{
  
     const [y, x] = cell.id.split(',').map(Number);
@@ -104,8 +181,9 @@ const clickHandler=(playerGrid,cell)=>{
     }else if(!hitStatus){
         //miss
         cell.style.pointerEvents = 'none';
-        cell.style.opacity = '0.5';         
+        cell.style.opacity = '0.5';      
     }
+    return
 
 }
 

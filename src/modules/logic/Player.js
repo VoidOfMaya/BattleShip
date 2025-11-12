@@ -37,18 +37,22 @@ class Player{
         }
     }
     aiAttack(opponent){
+        let x, y;
         do{
-            const x = Math.floor(Math.random()* 10);
-            const y = Math.floor(Math.random()* 10);
-        }while(this.#isCellShotAt(opponent.gameboard, x, y)){            
-            opponent.gameboard.attack([x, y]);
-            const cell = opponent.gameboard.getGrid()[targetY][targetX];
-            return cell instanceof Ship
+            x = Math.floor(Math.random()* 10);
+            y = Math.floor(Math.random()* 10);
+        }while(this.#isCellShotAt(opponent.gameboard.getGrid(), x, y)){            
+            const hitStatus = opponent.gameboard.recieveAttack([x, y]);
+
+            //const cell = opponent.gameboard.getGrid()[targetY][targetX];
+            //return cell instanceof Ship
+
+            return {hit: hitStatus, x , y};
 
         }
     }
     #isCellShotAt(board, x, y){
-        const cell = board.getGrid()[y][x];
+        const cell = board[y][x];
         return cell === false || (cell instanceof Ship && cell.hit> 0);
     }
 }
