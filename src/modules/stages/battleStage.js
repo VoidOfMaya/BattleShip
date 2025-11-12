@@ -75,17 +75,13 @@ const handlePvNpc = async (playerA, playerB)=>{
 }
 //ui updaters
 const displayPlayerGrid = (playerGrid , uiGameboard)=>{
-    
-
     playerGrid.forEach((logicRow, yIndex) =>{
         logicRow.forEach((logicCell, xIndex) =>{
             if(logicCell instanceof Ship){
                 //get dom cells          
                 const logicCellId = `${xIndex},${yIndex}`                
                 const cells = uiGameboard.querySelectorAll('.cell');
-
                 //check ship placement in the gameboard 2Darray
-                
                 cells.forEach(cell=>{
                     if(cell.id === logicCellId){
                         cell.style.backgroundColor = "#6cf1e6ff";
