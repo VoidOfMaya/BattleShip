@@ -40,12 +40,12 @@ class Gameboard{
     // - set coordinate to false indicating the coordinate is no longer an option;
     recieveAttack([x, y]){
         const cell = this.grid[y][x];
-
         if(cell === null){
             this.grid[y][x] = false;
             return false
         }else  if(cell instanceof Ship){
-            cell.hit(1);
+            cell.hit([y, x], 1);
+            this.grid[y][x] = false;
             return true;
         }
     }
@@ -55,6 +55,7 @@ class Gameboard{
         this.grid.forEach(row =>{
             row.forEach(cell=>{
                 if(cell instanceof Ship && !cell.getIsSunk())allSunk = false ;
+                
             })
         })
         return allSunk;

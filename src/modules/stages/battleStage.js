@@ -28,8 +28,8 @@ const handlePvNpc = async (playerA, playerB)=>{
                 gridSyncRester(gridA)
                 displayPlayerGrid(playerA.gameboard.getGrid(),gridA);
 
-                toggleEventListener(gridA, 'none');
-                toggleEventListener(gridB, 'auto');
+                toggleEventListener(gridA,playerA.gameboard.getGrid(), 'none');
+                toggleEventListener(gridB,playerB.gameboard.getGrid(), 'auto');
                 addAttackEventListener(playerB, gridB);
 
                 await waitForAttack(gridB);
@@ -49,13 +49,12 @@ const handlePvNpc = async (playerA, playerB)=>{
                 gridSyncRester(gridA)
                 displayPlayerGrid(playerA.gameboard.getGrid(),gridA);
                 
-                toggleEventListener(gridA, 'none');
-                toggleEventListener(gridB, 'none');
+                toggleEventListener(gridA,playerA.gameboard.getGrid(), 'none');
+                toggleEventListener(gridB,playerB.gameboard.getGrid(), 'none');
                 //addAttackEventListener(playerA, gridA);
-                await new Promise(resolve=> {setTimeout(resolve, 2000)});
+                await new Promise(resolve=> {setTimeout(resolve, 1000)});
                 await waitComputerAttack(playerB, playerA, gridA)
 
-                await new Promise(resolve=> {setTimeout(resolve, 1000)});
 
                 console.log(`fleet A status sunk:${playerA.gameboard.allShipsSunk()}`);
                 console.log(`fleet B status sunk:${playerB.gameboard.allShipsSunk()}`);
@@ -140,14 +139,37 @@ const waitComputerAttack =async(player, opponent, grid)=>{
 } 
 
 //handles event listeners
-const toggleEventListener=(grid, state)=>{
+const toggleEventListener=(grid,playerGrid, state)=>{
     const cells = grid.querySelectorAll('.cell');
+
     cells.forEach(cell=>{
+        const [y, x] = cell.id.split(',').map(Number);
+        console.log(`my cell is: [${y}]`)
+        if(playerGrid[x][y] === false){
+            cell.style.pointerEvents = 'none';
+            cell.style.opacity = '0.5';
+        }else{
+            cell.style.pointerEvents = state;
+        }
+    })
+    /*
+    let cellHasShip;
+    playerGrid.forEach((row, y)=>{
+        row.forEach((col, x)=>{
+            if(col instanceof Ship){
+                cellHasShip = `${y},${x}`;
+            }
+        })
+    })
+    cells.forEach(cell=>{
+        if(cell.id === cellHasShip){}
         cell.style.pointerEvents = state;
     })
+    */
 }
 const addAttackEventListener = (player, grid)=>{
     const cells = grid.querySelectorAll('.cell')
+
     cells.forEach(cell =>{
         cell.addEventListener('mouseover',()=>{
             cell.style.outline = '2px solid green';
@@ -165,21 +187,34 @@ const addAttackEventListener = (player, grid)=>{
 const clickHandler=(playerGrid,cell)=>{
  
     const [y, x] = cell.id.split(',').map(Number);
+    console.log(playerGrid.grid[y][x])
+    
+    if (playerGrid.grid[y][x] === undefined) {
+        console.error(`Invalid coordinates: (${y}, ${x})`);
+        return;
+    }
+    if(playerGrid.grid[y][x] !== false){
+        console.log(`Cell (${y}, ${x}) has already been attacked.`);
+        
+    }
+    
     const hitStatus =  playerGrid.recieveAttack([y, x]);
 
+    
     console.log(hitStatus);
     if(hitStatus){  
         //hit         
         cell.style.backgroundColor = "black";
         cell.style.pointerEvents = 'none';
         cell.style.opacity='0.5';
-                
+                    
     }else if(!hitStatus){
         //miss
         cell.style.pointerEvents = 'none';
         cell.style.opacity = '0.5';      
     }
     return
+    
 
 }
 
