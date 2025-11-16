@@ -95,28 +95,49 @@ const displayPlayerGrid = (playerGrid , uiGameboard)=>{
 const waitForAttack = (grid, player) =>{
     return new Promise(resolve => {
         const playerGrid = player.gameboard.grid;
+        const cells = grid.querySelectorAll('.cell');
+        //grid.addEventListener('click', (e) => {
+        //    const cell = e.target.closest('.cell');
+        //    if (!cell) return; // Ensure it's a valid cell
 
-        grid.addEventListener('click',(e)=>{
-            
-            /*
+        //    const [y, x] = cell.id.split(',').map(Number);
+
+            // Validate: If the cell has already been attacked, don't resolve
+        //    if (playerGrid[x][y] === false || playerGrid[x][y] === 'hit') {
+         //       console.log(`Cell (${x}, ${y}) has already been attacked.`);
+         //       return; // Don't proceed until a valid cell is clicked
+         //   }
+
+            // If it's a valid cell, resolve the promise
+        //    resolve(cell)    
+        const invalidCells = [];
+        cells.forEach(cell=>{
+            const [y, x] = cell.id.split(',').map(Number);
+            if(playerGrid[x][y] === false || playerGrid[x][y] === 'hit'){
+                invalidCells.push(cell);
+                //cell.style.pointerEvents = 'none';
+                //cell.style.opacity = '0.5';
+            }else{
+                //cell.style.pointerEvents = 'auto'; 
+                //cell.style.opacity = '1';   
+            }
+        });
+        function handleCellClick(e){
             const cell = e.target.closest('.cell');
+            const [y, x] = cell.id.split(',').map(Number);
 
-            const [y, x]= cell.id.split(',').map(Number);
-
-
-           
-
-            if(playerGrid[x][y] === false || playerGrid[x][y] === 'hit') {
-                console.log(`grid on waitforAttack:\n`);
-                console.log(playerGrid)
-                console.log(playerGrid[x][y])
-                alert("This cell has already been clicked. Please choose a valid cell.");
-
-            }*/
-
-            resolve();        
-        },{once:true});
-
+            //console.log(`Valid attack on cell (${x}, ${y})`);
+            invalidCells.push(cell);
+            resolve(cell);
+        }
+        cells.forEach(cell=>{
+            
+            if(!invalidCells.includes(cell) || !cell.hasAttribute('data-listener-added')){         
+                //console.log(cell.getAttribute('data-listener-added'))
+                cell.addEventListener('click',handleCellClick,{once:true});
+                //cell.setAttribute('data-listener-added')  ; 
+            }
+        })
     })
 }
 const waitComputerAttack =async(player, opponent, grid)=>{
@@ -226,8 +247,8 @@ const clickHandler=(playerGrid,cell)=>{
         cell.style.pointerEvents = 'none';
         cell.style.opacity = '0.5';      
     }
-    console.log(`grid on clickhandler:\n`);
-    console.log(playerGrid.grid);
+    //console.log(`grid on clickhandler:\n`);
+    //console.log(playerGrid.grid);
     return
     
 
