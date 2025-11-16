@@ -9,7 +9,11 @@ const battle= async (playerA,playerB, mode)=>{
 
     
     if(mode === 'pvnpc'){
-        await handlePvNpc(playerA, playerB);
+        const winner = await handlePvNpc(playerA, playerB);
+        if(winner){
+            attackView.style.display = "none";
+            return winner;
+        }
     }
 
 }

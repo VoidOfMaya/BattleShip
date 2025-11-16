@@ -25,7 +25,8 @@ pvp.id = 'pvp';
 pvp.style.gridArea= "pvp";
 pvp.style.justifySelf = "center";
 pvp.className = "in-button";
-
+pvp.style.pointerEvents = 'none';
+pvp.style.opacity = '0.5';
 
 const pvnpc = document.createElement('div');
 pvnpc.innerHTML = "Player vs. Computer";
