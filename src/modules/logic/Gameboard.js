@@ -45,7 +45,7 @@ class Gameboard{
             return false
         }else  if(cell instanceof Ship){
             cell.hit([y, x], 1);
-            this.grid[y][x] = false;
+            this.grid[y][x] = "hit";
             return true;
         }
     }

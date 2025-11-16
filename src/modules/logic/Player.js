@@ -36,7 +36,7 @@ class Player{
             })
         }
     }
-    aiAttack(opponent){
+    aiAttack(opponent,){
         let x, y;
         do{
             x = Math.floor(Math.random()* 10);
@@ -44,18 +44,45 @@ class Player{
         }while(this.#isCellShotAt(opponent.gameboard.getGrid(), x, y)){            
             const hitStatus = opponent.gameboard.recieveAttack([x, y]);
 
-            //const cell = opponent.gameboard.getGrid()[targetY][targetX];
-            //return cell instanceof Ship
-
             return {hit: hitStatus, x , y};
 
         }
     }
     #isCellShotAt(board, x, y){
         const cell = board[y][x];
-        return cell === false || (cell instanceof Ship && cell.hit> 0);
+        return cell === false || cell === "hit" ;
+    }
+    //attempt at a smarter ai (not required for the project)
+    #huntShip(x, y, opponent){
+        const nearByCells = [
+            [x, y -1],
+            [x, y + 1],
+            [x -1 , y],
+            [x + 1, y]
+        ]
+        let validCells = [];
+        nearByCells.forEach(cell=>{
+            const [newX,newY] = cell;
+            if (newX >= 0 && newX < 10 && newY >= 0 && newY < 10) {
+                // Check if the cell is either a miss (false) or "hit" (already attacked)
+                const cellStatus = opponent.gameboard.getGrid()[newY][newX];
+                if (cellStatus !== false && cellStatus !== "hit") {
+                    validCells.push([newX, newY]);
+                }
+            }
+        })
+        if (validCells.length > 0){
+            const randomIndex = Math.floor(Math.random() * validCells.length);
+            const [targetX, targetY] = validCells[randomIndex];
+            console.log( `valid next moves: ${validCells}`);
+            return{targetX, targetY};
+   
+        }
+        return null;
+
     }
 }
+
 export{
     Player
 }
