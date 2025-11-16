@@ -19,6 +19,7 @@ const handlePvNpc = async (playerA, playerB)=>{
         attackView.style.display = "grid";
         let stage = 'attack';
         let winner = false;
+        addAttackEventListener(playerB, gridB);
 
 
         while(!winner){
@@ -30,9 +31,9 @@ const handlePvNpc = async (playerA, playerB)=>{
 
                 toggleEventListener(gridA,playerA.gameboard.getGrid(), 'none');
                 toggleEventListener(gridB,playerB.gameboard.getGrid(), 'auto');
-                addAttackEventListener(playerB, gridB);
 
-                await waitForAttack(gridB);
+
+                await waitForAttack(gridB, playerB);
 
                 if(playerB.gameboard.allShipsSunk()){
                     winner = true;
@@ -52,7 +53,7 @@ const handlePvNpc = async (playerA, playerB)=>{
                 await waitComputerAttack(playerB, playerA, gridA)    
             if(playerA.gameboard.allShipsSunk()){
                     winner = true;
-                    title.innerHTML ="you are the winner";
+                    title.innerHTML ="computer has won";
                 }else{
                     stage = 'attack';  
                 }    
@@ -91,13 +92,31 @@ const displayPlayerGrid = (playerGrid , uiGameboard)=>{
 }
 
 //asyncronus attacks
-const waitForAttack = (grid) =>{
+const waitForAttack = (grid, player) =>{
     return new Promise(resolve => {
+        const playerGrid = player.gameboard.grid;
+
         grid.addEventListener('click',(e)=>{
-            if(e.target.classList.contains('cell')){
-              resolve(e.target);  
-            }     
+            
+            /*
+            const cell = e.target.closest('.cell');
+
+            const [y, x]= cell.id.split(',').map(Number);
+
+
+           
+
+            if(playerGrid[x][y] === false || playerGrid[x][y] === 'hit') {
+                console.log(`grid on waitforAttack:\n`);
+                console.log(playerGrid)
+                console.log(playerGrid[x][y])
+                alert("This cell has already been clicked. Please choose a valid cell.");
+
+            }*/
+
+            resolve();        
         },{once:true});
+
     })
 }
 const waitComputerAttack =async(player, opponent, grid)=>{
@@ -150,33 +169,50 @@ const toggleEventListener=(grid,playerGrid, state)=>{
 const addAttackEventListener = (player, grid)=>{
     const cells = grid.querySelectorAll('.cell')
 
+    const clickListener = (e) =>{
+        const cell = e.target.closest('.cell');
+        if(!cell) return;
+        clickHandler(player.gameboard, cell)
+
+    }
+
     cells.forEach(cell =>{
-        cell.addEventListener('mouseover',()=>{
+        if(!cell.hasAttribute('data-listener-added')){
+
+            cell.addEventListener('mouseover',()=>{
             cell.style.outline = '2px solid green';
             cell.style.outlineOffset = '-2px';
-        })
+                })
             cell.addEventListener('mouseout',()=>{
             cell.style.outline = 'none';
             cell.style.outlineOffset = '0px';
-        })
-        cell.addEventListener('click', ()=>{clickHandler(player.gameboard, cell)});
+                })
+            cell.removeEventListener('click', clickListener);
+            cell.addEventListener('click', clickListener,{once:true});
+            cell.setAttribute('data-listener-added', 'true');
+        }
     })
+
 }
 const clickHandler=(playerGrid,cell)=>{
  
     const [y, x] = cell.id.split(',').map(Number);
    // console.log(playerGrid.grid[y][x])
-    
-    if (playerGrid.grid[y][x] === undefined) {
-        console.error(`Invalid coordinates: (${y}, ${x})`);
+    let hitStatus;
+    if ( Number.isNaN(x) || Number.isNaN(y) || y < 0 || y > 9 || x < 0 || x > 9 ||playerGrid.grid[x][y] === undefined) {
+        console.error(`Invalid coordinates: (${x}, ${y})`);
         return;
     }
-    if(playerGrid.grid[y][x] !== false){
-        console.log(`Cell (${y}, ${x}) has already been attacked.`);
+    if(playerGrid.grid[x][y] === false || playerGrid.grid[x][y] === 'hit'){
+        console.log(playerGrid.grid[x][y])
+        console.log(`Cell (${x}, ${y}) has already been attacked.`);
+        return
         
     }
     
-    const hitStatus =  playerGrid.recieveAttack([y, x]);
+    if(playerGrid.grid[x][y] instanceof Ship || playerGrid.grid[x][y] === null ){
+        hitStatus =  playerGrid.recieveAttack([y, x]);
+    }
 
     
     if(hitStatus){  
@@ -190,6 +226,8 @@ const clickHandler=(playerGrid,cell)=>{
         cell.style.pointerEvents = 'none';
         cell.style.opacity = '0.5';      
     }
+    console.log(`grid on clickhandler:\n`);
+    console.log(playerGrid.grid);
     return
     
 
