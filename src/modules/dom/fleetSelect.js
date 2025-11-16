@@ -57,12 +57,16 @@ destroyer.addEventListener('click',()=>{
     console.log(`selected ship set to:${selectedShip} `)    
 })
 const direction = document.createElement("div");
+direction.className = "in-button";
+direction.style.backgroundColor = "#ff8383ff";
 direction.innerHTML = orientation;
 direction.addEventListener("click",()=>{
     if(orientation === "horizontal"){
-        orientation = "vertical";    
+        orientation = "vertical";   
+        direction.style.backgroundColor = "#99ec8fff"; 
     }else{
         orientation = "horizontal";
+        direction.style.backgroundColor = "#ff8383ff";
     }
     direction.innerHTML = orientation
 })

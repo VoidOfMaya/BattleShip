@@ -1,5 +1,4 @@
 import { view as attackView, title, gridA, gridB} from "../dom/Attack";
-import { view as observeView} from "../dom/observe";
 import {container } from "../dom/mainContainer"
 import { Ship } from "../logic/Ship";
 
@@ -38,6 +37,7 @@ const handlePvNpc = async (playerA, playerB)=>{
                 if(playerB.gameboard.allShipsSunk()){
                     winner = true;
                     title.innerHTML ="you are the winner";
+                    resolve('PlayerA')
                 }else{
                     stage = 'observe';  
                 }    
@@ -54,12 +54,13 @@ const handlePvNpc = async (playerA, playerB)=>{
             if(playerA.gameboard.allShipsSunk()){
                     winner = true;
                     title.innerHTML ="computer has won";
+                    resolve('playerB')
                 }else{
                     stage = 'attack';  
                 }    
             }
         }
-        resolve();
+
  
     })
 
@@ -90,56 +91,38 @@ const displayPlayerGrid = (playerGrid , uiGameboard)=>{
     })
 
 }
-
 //asyncronus attacks
 const waitForAttack = (grid, player) =>{
     return new Promise(resolve => {
         const playerGrid = player.gameboard.grid;
         const cells = grid.querySelectorAll('.cell');
-        //grid.addEventListener('click', (e) => {
-        //    const cell = e.target.closest('.cell');
-        //    if (!cell) return; // Ensure it's a valid cell
-
-        //    const [y, x] = cell.id.split(',').map(Number);
-
-            // Validate: If the cell has already been attacked, don't resolve
-        //    if (playerGrid[x][y] === false || playerGrid[x][y] === 'hit') {
-         //       console.log(`Cell (${x}, ${y}) has already been attacked.`);
-         //       return; // Don't proceed until a valid cell is clicked
-         //   }
-
-            // If it's a valid cell, resolve the promise
-        //    resolve(cell)    
+  
         const invalidCells = [];
         cells.forEach(cell=>{
             const [y, x] = cell.id.split(',').map(Number);
             if(playerGrid[x][y] === false || playerGrid[x][y] === 'hit'){
                 invalidCells.push(cell);
-                //cell.style.pointerEvents = 'none';
-                //cell.style.opacity = '0.5';
-            }else{
-                //cell.style.pointerEvents = 'auto'; 
-                //cell.style.opacity = '1';   
+
             }
         });
         function handleCellClick(e){
             const cell = e.target.closest('.cell');
             const [y, x] = cell.id.split(',').map(Number);
 
-            //console.log(`Valid attack on cell (${x}, ${y})`);
             invalidCells.push(cell);
             resolve(cell);
         }
         cells.forEach(cell=>{
             
             if(!invalidCells.includes(cell) || !cell.hasAttribute('data-listener-added')){         
-                //console.log(cell.getAttribute('data-listener-added'))
+
                 cell.addEventListener('click',handleCellClick,{once:true});
-                //cell.setAttribute('data-listener-added')  ; 
+
             }
         })
     })
 }
+//computer attack
 const waitComputerAttack =async(player, opponent, grid)=>{
     return new Promise(resolve=> {
         const { hit, x, y} = player.aiAttack(opponent);
@@ -170,7 +153,6 @@ const waitComputerAttack =async(player, opponent, grid)=>{
            
     })
 } 
-
 //handles event listeners
 const toggleEventListener=(grid,playerGrid, state)=>{
     const cells = grid.querySelectorAll('.cell');
@@ -187,6 +169,7 @@ const toggleEventListener=(grid,playerGrid, state)=>{
     })
 
 }
+//appends event listeners to cells
 const addAttackEventListener = (player, grid)=>{
     const cells = grid.querySelectorAll('.cell')
 
@@ -215,18 +198,18 @@ const addAttackEventListener = (player, grid)=>{
     })
 
 }
+//handels event listener onclick
 const clickHandler=(playerGrid,cell)=>{
  
     const [y, x] = cell.id.split(',').map(Number);
-   // console.log(playerGrid.grid[y][x])
+
     let hitStatus;
     if ( Number.isNaN(x) || Number.isNaN(y) || y < 0 || y > 9 || x < 0 || x > 9 ||playerGrid.grid[x][y] === undefined) {
         console.error(`Invalid coordinates: (${x}, ${y})`);
         return;
     }
     if(playerGrid.grid[x][y] === false || playerGrid.grid[x][y] === 'hit'){
-        console.log(playerGrid.grid[x][y])
-        console.log(`Cell (${x}, ${y}) has already been attacked.`);
+        console.warn(`Cell (${x}, ${y}) has already been attacked.`);
         return
         
     }
@@ -247,13 +230,11 @@ const clickHandler=(playerGrid,cell)=>{
         cell.style.pointerEvents = 'none';
         cell.style.opacity = '0.5';      
     }
-    //console.log(`grid on clickhandler:\n`);
-    //console.log(playerGrid.grid);
+
     return
     
 
 }
-
 
 export{
     battle

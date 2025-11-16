@@ -29,7 +29,7 @@ gridB.style.gridArea ='gridB';
 const gridAContainer = document.createElement('div');
 gridAContainer.style.display = 'grid';
 gridAContainer.style.gridTemplateColumns = "1fr";
-gridAContainer.style.gridTemplateRows = "1fr 4fr";
+gridAContainer.style.gridTemplateRows = "1fr 6fr";
 gridAContainer.style.gridTemplateAreas = `
 "gridNameA "
 " gridA "`
@@ -48,7 +48,7 @@ gridAContainer.appendChild(gridA)
 const gridBContainer = document.createElement('div');
 gridBContainer.style.display = 'grid';
 gridBContainer.style.gridTemplateColumns = "1fr";
-gridBContainer.style.gridTemplateRows = "1fr 4fr";
+gridBContainer.style.gridTemplateRows = "1fr 6fr";
 gridBContainer.style.gridTemplateAreas = `
 "gridNameB "
 " gridB "`
