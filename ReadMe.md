@@ -1,6 +1,16 @@
-# Battleship Game
+# Battleship Game(COMPLETED)
 
 Welcome to the **Battleship** game project! This is an implementation of the classic strategic game Battleship, where players aim to sink their opponent's fleet of ships by guessing their locations.
+
+**(final thought/objective conclusions):**
+this project is very minimalistic in designe as a ui was not the top priority of this project,
+- TDD, was attempted however found to be very difficult and very confusing when it comes to testing
+  handlers that mixed logic to trigger ui
+- git, throughout this project the implementation of sound git practices was a bit tricky
+  however most learned git practices where implemented atleast once!
+- algorthims, in follwing this project no algorthims where needed  as it felt excessive for a simple
+  static 10 by 10 game board 
+
 
 ## Project objectives
 
