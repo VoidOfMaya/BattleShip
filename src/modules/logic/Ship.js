@@ -37,6 +37,13 @@ class Ship{
         if(!this.#isSunk && this.#damage === this.#length) this.#isSunk = true;
 
     }
+    resatShip(){
+        this.#length = 0;
+        this.#damage = 0;
+        this.#positions = [];
+        this.#isSunk = false;
+        this.name = '';
+    }
     
 
 }

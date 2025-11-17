@@ -115,10 +115,7 @@ const handleCellClick = (id, player)=>{
     //check if all ships are placed
     if(placedShips.length === 5){
         next.style.display = 'block';
-        //next.addEventListener('click',()=>{
-        //    console.log(`button triggered`);
-        //    return next.id;
-        //})
+
     }
 }
 const getShipByName = (shipName)=>{

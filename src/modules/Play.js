@@ -4,7 +4,7 @@ import { view as attackView} from "./dom/Attack";
 import { view as observeView} from "./dom/observe";
 import { view as initView, gameMode} from "./dom/preInit";
 import { view as fleetSetView } from "./dom/setFleet";
-import { addEventListenerTocells, nextStage } from "./fleetSetup";
+import { addEventListenerTocells, nextStage, resetFleet } from "./fleetSetup";
 import { handleAttacking } from "./stages/battleStage";
 //import grids
 import { Ship } from "./logic/Ship";
@@ -21,9 +21,10 @@ const gameStart = async ()=>{
    let playAgain =true;
    //setsgame mode
    //global players:
+ 
    while(playAgain){
-    let playerA;
-    let playerB;
+    let playerA = null;
+    let playerB = null
     const mode = await showMenu();
     //fleet setup
         if(mode === 'pvnpc'){
@@ -41,14 +42,20 @@ const gameStart = async ()=>{
         //battle loop
         const winner = await battle(playerA, playerB, mode);
         //end
-        await showEnd(winner);
+        const newRound = await showEnd(winner);
 
         //prompt new game
-        playAgain =await newGame();
+        playAgain =await newGame(newRound, playerA, playerB);
     }
-}
-const newGame = async () =>{
 
+}
+const newGame = async (input, playerA, playerB) =>{
+    if(input){
+        playerA.gameboard.clearGrid();
+        playerB.gameboard.clearGrid();
+        resetFleet();
+        gameStart();
+    }
 }
 
 const battleship=()=>{

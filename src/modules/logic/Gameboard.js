@@ -36,6 +36,20 @@ class Gameboard{
             }
         } 
     }
+    clearGrid(){
+        
+        if(this.grid !== null){
+            this.grid.forEach(row =>{
+                row.forEach(col=>{
+                    if(col instanceof Ship){
+                        col.resatShip();
+                        col = null;
+                    }
+                    col = null;
+                })
+            })
+        }
+    }
     //if coordinate is null meaning no ship,
     // - set coordinate to false indicating the coordinate is no longer an option;
     recieveAttack([x, y]){

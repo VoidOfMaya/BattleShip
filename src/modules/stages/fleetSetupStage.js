@@ -32,18 +32,11 @@ const setupPlayerFleet = async (player, nextBtn)=>{
             fleetSetView.appendChild(next);
         }
 
-        //const newNext =nextStage.cloneNode(true);
-        //Object.assign(nextStage, newNext);
-
-
         next.addEventListener('click',()=>{
             console.log(`next button has been clicked!`);
             resolve();
         },{once:true});
-        //if(!fleetSetView.contains(nextStage)){
-        //    fleetSetView.appendChild(nextStage);
-        //}
-        
+      
     })
 }
  export{

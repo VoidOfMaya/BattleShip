@@ -11,9 +11,13 @@ const battle= async (playerA,playerB, mode)=>{
     if(mode === 'pvnpc'){
         const winner = await handlePvNpc(playerA, playerB);
         if(winner){
+            resetGrids(gridA, playerA.gameboard.getGrid());
+            resetGrids(gridB, playerB.gameboard.getGrid());
             attackView.style.display = "none";
-            return winner;
+            return winner
+            
         }
+
     }
 
 }
@@ -58,7 +62,7 @@ const handlePvNpc = async (playerA, playerB)=>{
             if(playerA.gameboard.allShipsSunk()){
                     winner = true;
                     title.innerHTML ="computer has won";
-                    resolve('playerB')
+                    resolve('PlayerB')
                 }else{
                     stage = 'attack';  
                 }    
@@ -238,6 +242,19 @@ const clickHandler=(playerGrid,cell)=>{
     return
     
 
+}
+//reseting gamebaord
+const resetGrids = (grid, playerGrid) =>{
+    const cells = grid.querySelectorAll('.cell');
+    cells.forEach(cell=>{
+        const [y, x] = cell.id.split(',').map(Number);
+        playerGrid[x][y] = null
+        const clone = cell.cloneNode(true);
+        cell.parentNode.replaceChild(clone,cell)
+        cell.style.pointerEvents = 'auto';
+        cell.style.opacity = '1';
+        cell.style.backgroundColor = '';
+    })
 }
 
 export{
