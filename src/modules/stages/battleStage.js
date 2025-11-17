@@ -33,6 +33,11 @@ const handlePvNpc = async (playerA, playerB)=>{
             if(stage === 'attack'){
                 //player attacks
                 title.innerHTML ="Your turn to attack!";
+                gridA.style.outline = "none";
+                gridA.style.outlineOffset = '0px';
+
+                gridB.style.outline = "2px solid black";
+                gridB.style.outlineOffset = '-2px';
 
                 displayPlayerGrid(playerA.gameboard.getGrid(),gridA);
 
@@ -41,6 +46,7 @@ const handlePvNpc = async (playerA, playerB)=>{
 
 
                 await waitForAttack(gridB, playerB);
+                await new Promise(resolve=> {setTimeout(resolve, 500)}); 
 
                 if(playerB.gameboard.allShipsSunk()){
                     winner = true;
@@ -54,11 +60,18 @@ const handlePvNpc = async (playerA, playerB)=>{
 
                 //computer attacks
                 title.innerHTML ="Computers turn to attack!";
+                gridB.style.outline = "none";
+                gridB.style.outlineOffset = '0px';
+                
+                gridA.style.outline = "2px solid black";
+                gridA.style.outlineOffset = '-2px';
                 toggleEventListener(gridA,playerA.gameboard.getGrid(), 'none');
                 toggleEventListener(gridB,playerB.gameboard.getGrid(), 'none');
 
                 await new Promise(resolve=> {setTimeout(resolve, 1000)});
-                await waitComputerAttack(playerB, playerA, gridA)    
+                await waitComputerAttack(playerB, playerA, gridA) 
+                await new Promise(resolve=> {setTimeout(resolve, 500)});  
+
             if(playerA.gameboard.allShipsSunk()){
                     winner = true;
                     title.innerHTML ="computer has won";

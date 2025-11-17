@@ -5,9 +5,9 @@ const showEnd = async (winner)=>{
       console.log(`the winner is: ${typeof winner}`);
       const congrats = document.createElement('div');
       if(winner === 'PlayerA'){
-         congrats.innerHTML = 'Congratulations you won this round!, try your luck again? ';
+         congrats.innerHTML = 'Congratulations you won this round!';
       }else if(winner === "PlayerB"){
-         congrats.innerHTML = ' the Computer has won this round!, but not all hope is lost! ';
+         congrats.innerHTML = 'You died!';
       }
       congrats.style.display = 'grid';
       congrats.style.justifySelf = 'center';
@@ -25,7 +25,7 @@ const showEnd = async (winner)=>{
       })
    */
       container.appendChild(congrats);
-      container.appendChild(button);      
+      
    })
 
 };
