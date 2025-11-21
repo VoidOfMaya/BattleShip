@@ -1,16 +1,22 @@
+import '../../styles.css';
 import { createBoard } from "./grid";
 import { carrier, battleShip, cruiser, submarine, destroyer, direction } from "./fleetSelect";
 
 const view = document.createElement('div');
 view.style.display = "none";
+view.classList.add('fleet-view')
 
 const fleetCont = document.createElement('div');
+fleetCont.classList.add('ship-Btns');
 fleetCont.style.gridArea = 'choices';
 fleetCont.style.alignContent = "center";
 fleetCont.style.justifyContent = "center";
 
 view.style.alignSelf = "center";
 view.style.justifySelf = "center";
+view.style.justifyItems = 'center';
+view.style.alignItems = 'center';
+
 view.style.display = "grid";
 view.style.height = '100%';
 view.style.width = '100%';
@@ -29,6 +35,7 @@ title.style.alignSelf = "center";
 title.style.justifySelf = "center";
 const {grid, cells} = createBoard('playerA');
 grid.style.gridArea= "gridA";
+
 
 view.appendChild(fleetCont);
 view.appendChild(grid);

@@ -40,6 +40,13 @@ gridAName.innerHTML = gridA.id;
 gridAName.style.gridArea = 'gridNameA';
 gridAName.style.alignSelf = 'center';
 gridAName.style.justifySelf = 'center';
+//centering container title and board
+//title
+gridAName.style.alignItems = 'center';
+gridAName.style.justifyItems = 'center';
+//board
+gridAContainer.style.alignItems = 'center';
+gridAContainer.style.justifyItems = 'center';
 
 gridAContainer.appendChild(gridAName)
 gridAContainer.appendChild(gridA)
@@ -59,6 +66,13 @@ gridBName.innerHTML = gridB.id;
 gridBName.style.gridArea = 'gridNameB';
 gridBName.style.alignSelf = 'center';
 gridBName.style.justifySelf = 'center';
+//centering container title and board
+//title
+gridBName.style.alignItems = 'center';
+gridBName.style.justifyItems = 'center';
+//board
+gridBContainer.style.alignItems = 'center';
+gridBContainer.style.justifyItems = 'center';
 
 gridBContainer.appendChild(gridBName)
 gridBContainer.appendChild(gridB)

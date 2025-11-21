@@ -1,13 +1,14 @@
+import "../../styles.css";
 const body = document.body;
 
 //maincontainer
 const container = document.createElement('div');
+container.classList.add('main-container');
 container.style.gridArea = 'main';
 container.style.display = 'grid';
-//container.style.gridTemplateColumns = 'repeat(10, 1fr)';
-//container.style.gridTemplateRows = 'repeat(10, 1fr)';
+
 container.style.gap = "2px";
-container.style.backgroundColor = "#ddddddff";
+//container.style.backgroundColor = "#ddddddff";
 
 //gametitle
 const playerTitle = document.createElement('dev');

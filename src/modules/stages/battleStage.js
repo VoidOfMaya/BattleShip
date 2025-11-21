@@ -33,11 +33,20 @@ const handlePvNpc = async (playerA, playerB)=>{
             if(stage === 'attack'){
                 //player attacks
                 title.innerHTML ="Your turn to attack!";
-                gridA.style.outline = "none";
-                gridA.style.outlineOffset = '0px';
+                //gridA.style.outline = "none";
+                //gridA.style.outlineOffset = '0px';
 
-                gridB.style.outline = "2px solid black";
-                gridB.style.outlineOffset = '-2px';
+
+                //gridB.style.transform= "scale(1)";
+                //gridB.style.transition ="transform 0.2s ease, outline 0.2s ease";
+                gridA.classList.remove('under-attack');
+                gridB.classList.remove('attacking');
+
+                gridA.classList.add('attacking')
+                gridB.classList.add('under-attack');
+
+                //gridB.style.outline = "2px solid black";
+                //gridB.style.outlineOffset = '-2px';
 
                 displayPlayerGrid(playerA.gameboard.getGrid(),gridA);
 
@@ -60,11 +69,17 @@ const handlePvNpc = async (playerA, playerB)=>{
 
                 //computer attacks
                 title.innerHTML ="Computers turn to attack!";
-                gridB.style.outline = "none";
-                gridB.style.outlineOffset = '0px';
-                
-                gridA.style.outline = "2px solid black";
-                gridA.style.outlineOffset = '-2px';
+                //gridB.style.outline = "none";
+                //gridB.style.outlineOffset = '0px';
+                gridB.classList.remove('under-attack');
+                gridA.classList.remove('attacking');
+
+                gridB.classList.add('attacking')
+                gridA.classList.add('under-attack');
+               //gridA.style.outline = "2px solid black";
+                //gridA.style.outlineOffset = '-2px';
+
+
                 toggleEventListener(gridA,playerA.gameboard.getGrid(), 'none');
                 toggleEventListener(gridB,playerB.gameboard.getGrid(), 'none');
 

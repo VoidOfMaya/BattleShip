@@ -1,11 +1,14 @@
 
 const createBoard =(boardId)=>{
     const grid = document.createElement('div');
+    grid.style.width = "500px";
+    grid.style.height = "500px"
+
     grid.style.display = "grid";
     grid.id =boardId;
     grid.style.gap = "2px";
-    grid.style.padding = "10px"
-    grid.style.backgroundColor= "#d6d6d6ff";
+    grid.style.padding = "2px"
+    grid.style.backgroundColor= "#b1cac9ff";
     grid.style.gridTemplateColumns = 'repeat(10, 1fr)';
     grid.style.gridTemplateRows = 'repeat(10, 1fr)';
     const cells = [];

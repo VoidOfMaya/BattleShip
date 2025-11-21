@@ -1,14 +1,10 @@
 import { Player } from "./logic/Player";
-import { body, container, router } from "./dom/mainContainer";
-import { view as attackView} from "./dom/Attack";
-import { view as observeView} from "./dom/observe";
-import { view as initView, gameMode} from "./dom/preInit";
-import { view as fleetSetView } from "./dom/setFleet";
+import { body} from "./dom/mainContainer";
+
 import { addEventListenerTocells, nextStage, resetFleet } from "./fleetSetup";
-import { handleAttacking } from "./stages/battleStage";
+
 //import grids
-import { Ship } from "./logic/Ship";
-import { grid as settingGrid } from './dom/setFleet'
+
 import { showMenu } from "./stages/menuStage";
 import { fleetPlacement } from "./stages/fleetSetupStage";
 import { battle } from "./stages/battleStage";
