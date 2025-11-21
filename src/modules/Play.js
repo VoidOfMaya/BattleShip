@@ -1,10 +1,8 @@
 import { Player } from "./logic/Player";
 import { body} from "./dom/mainContainer";
-
-import { addEventListenerTocells, nextStage, resetFleet } from "./fleetSetup";
+import {resetFleet } from "./fleetSetup";
 
 //import grids
-
 import { showMenu } from "./stages/menuStage";
 import { fleetPlacement } from "./stages/fleetSetupStage";
 import { battle } from "./stages/battleStage";

@@ -150,8 +150,8 @@ const highlightPreview = (player, startR, startC, length, direction)=>{
 
         const cell = Array.from(cells).find(c => c.id === `${row},${col}`);
         if (cell) {
-            cell.dataset.preview = 'true'; // mark for reset later
-            cell.style.outline = '2px solid #00bfff'; // preview color
+            cell.dataset.preview = 'true';
+            cell.style.outline = '2px solid #00bfff'; 
             cell.style.shadowBox = "0px 0px 40px -10px #00bfff"
             cell.style.outlineOffset = '-2px';
         }
@@ -164,7 +164,7 @@ const resetPreview=()=>{
     cells.forEach(cell => {
         if (cell.dataset.preview) {
             cell.style.shadowBox = 'none'
-            cell.style.outline = 'none'; // reset to default
+            cell.style.outline = 'none';
             delete cell.dataset.preview;
         }
     });
