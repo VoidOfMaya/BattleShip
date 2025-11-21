@@ -10,7 +10,7 @@ module.exports = {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
-    publicPath: '/',
+    publicPath: 'https://voidofmaya.github.io/BattleShip/',
   },
   devtool: "eval-source-map",
   devServer: {
@@ -19,6 +19,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/template.html",
+      inject: true,
     }),
     new MiniCssExtractPlugin({
       filename: "styles.css",  
